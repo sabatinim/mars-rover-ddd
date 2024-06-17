@@ -1,0 +1,14 @@
+version: '3.6'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: container/Dockerfile
+    volumes:
+      - ${PWD}:/code
+    container_name: dev
+    networks:
+        - api-net
+networks:
+  api-net:

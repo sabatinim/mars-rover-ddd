@@ -1,0 +1,18 @@
+#!/bin/bash
+trap state ERR EXIT
+
+function state() {
+  exit $?
+}
+
+echo "Building containers"
+docker-compose build dev
+
+echo "Check for unused/dead code"
+docker-compose run dev vulture app/ test/ whitelist.py
+
+echo "Running tests"
+docker-compose run dev pytest
+
+echo "Running main.py"
+docker-compose run dev python /code/app/main.py
