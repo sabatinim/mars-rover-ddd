@@ -1,14 +1,14 @@
 version: '3.6'
 
 services:
-  dev:
+  mars-rover:
     build:
       context: .
       dockerfile: container/Dockerfile
     volumes:
       - ${PWD}:/code
-    container_name: dev
+    container_name: mars-rover
     networks:
-        - api-net
+        - mars-rover-net
 networks:
-  api-net:
+  mars-rover-net:
