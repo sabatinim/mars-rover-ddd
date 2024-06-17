@@ -6,13 +6,13 @@ function state() {
 }
 
 echo "Building containers"
-docker-compose build dev
+docker-compose build mars-rover
 
 echo "Check for unused/dead code"
-docker-compose run dev vulture app/ test/ whitelist.py
+docker-compose run mars-rover vulture app/ test/ whitelist.py
 
 echo "Running tests"
-docker-compose run dev pytest
+docker-compose run mars-rover pytest
 
 echo "Running main.py"
-docker-compose run dev python /code/app/main.py
+docker-compose run mars-rover python /code/app/main.py
