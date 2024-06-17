@@ -1,0 +1,11 @@
+name: python_starter-CI
+on: push
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: CI
+        run: script/ci
