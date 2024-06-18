@@ -1,5 +1,6 @@
 import enum
 import unittest
+from functools import reduce
 
 
 class Point:
@@ -13,50 +14,50 @@ class Point:
 
 
 class TurnRight:
-    @staticmethod
-    def execute(previous_point: Point) -> Point:
+    def execute(self, previous_point: Point) -> Point:
         match previous_point.direction:
             case Direction.NORTH:
                 return Point(previous_point.x, previous_point.y, Direction.EAST)
 
 
 class TurnLeft:
-    @staticmethod
-    def execute(previous_point: Point) -> Point:
+    def execute(self, previous_point: Point) -> Point:
         match previous_point.direction:
             case Direction.NORTH:
                 return Point(previous_point.x, previous_point.y, Direction.WEST)
 
 
 class Move:
-    @staticmethod
-    def execute(previous_point: Point, grid) -> Point:
+    def __init__(self, grid):
+        self.grid = grid
+
+    def execute(self, previous_point: Point) -> Point:
         match previous_point.direction:
             case Direction.NORTH:
                 return Point(previous_point.x, previous_point.y + 1, previous_point.direction)
             case Direction.EAST:
                 return Point(previous_point.x + 1, previous_point.y, previous_point.direction)
             case Direction.WEST:
-                x = grid[0] - abs(previous_point.x - 1)
+                x = self.grid[0] - abs(previous_point.x - 1)
                 return Point(x, previous_point.y, previous_point.direction)
 
 
 class MarsRover:
-    def __init__(self, initial_point):
-        self.initial_point = initial_point
-        self.grid = (4, 4)
+    def __init__(self, actual_point: Point, grid):
+        self.actual_point = actual_point
+
+        self.command_map = {"R": TurnRight(),
+                            "L": TurnLeft(),
+                            "M": Move(grid)}
 
     def run(self, commands):
-        for c in commands:
-            match c:
-                case "R":
-                    self.initial_point = TurnRight.execute(self.initial_point)
-                case "L":
-                    self.initial_point = TurnLeft.execute(self.initial_point)
-                case "M":
-                    self.initial_point = Move.execute(self.initial_point, self.grid)
+        parsed_commands = [self.command_map[c] for c in commands]
 
-        return self.initial_point.to_string()
+        self.actual_point = reduce(lambda point, command: command.execute(point),
+                                   parsed_commands,
+                                   self.actual_point)
+
+        return self.actual_point.to_string()
 
 
 class Direction(enum.Enum):
@@ -68,31 +69,35 @@ class Direction(enum.Enum):
 
 class TestApp(unittest.TestCase):
     def test_turn_right(self):
-        actual = MarsRover(initial_point=Point(0, 0, Direction.NORTH)).run("R")
+        actual = create_mars_rover().run("R")
 
         self.assertEqual(actual, "0:0:E")
 
     def test_turn_left(self):
-        actual = MarsRover(initial_point=Point(0, 0, Direction.NORTH)).run("L")
+        actual = create_mars_rover().run("L")
 
         self.assertEqual(actual, "0:0:W")
 
     def test_move(self):
-        actual = MarsRover(initial_point=Point(0, 0, Direction.NORTH)).run("M")
+        actual = create_mars_rover().run("M")
 
         self.assertEqual(actual, "0:1:N")
 
     def test_move_double(self):
-        actual = MarsRover(initial_point=Point(0, 0, Direction.NORTH)).run("MM")
+        actual = create_mars_rover().run("MM")
 
         self.assertEqual(actual, "0:2:N")
 
     def test_move_on_x(self):
-        actual = MarsRover(initial_point=Point(0, 0, Direction.EAST)).run("MM")
+        actual = create_mars_rover(actual_point=Point(0, 0, Direction.EAST)).run("MM")
 
         self.assertEqual(actual, "2:0:E")
 
     def test_move_on_y(self):
-        actual = MarsRover(initial_point=Point(0, 0, Direction.WEST)).run("MM")
+        actual = create_mars_rover(actual_point=Point(0, 0, Direction.WEST)).run("MM")
 
         self.assertEqual(actual, "2:0:W")
+
+
+def create_mars_rover(actual_point=Point(0, 0, Direction.NORTH), grid=(4, 4)):
+    return MarsRover(actual_point=actual_point, grid=grid)
