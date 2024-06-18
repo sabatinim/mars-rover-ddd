@@ -46,9 +46,7 @@ class MarsRover:
     def __init__(self, actual_point: Point, grid):
         self.actual_point = actual_point
 
-        self.command_map = {"R": TurnRight(),
-                            "L": TurnLeft(),
-                            "M": Move(grid)}
+        self.command_map = {"R": TurnRight(), "L": TurnLeft(), "M": Move(grid)}
 
     def run(self, commands):
         parsed_commands = [self.command_map[c] for c in commands]
@@ -62,7 +60,6 @@ class MarsRover:
 
 class Direction(enum.Enum):
     NORTH = "N"
-    SOUTH = "S"
     WEST = "W"
     EAST = "E"
 
