@@ -42,18 +42,18 @@ class InMemoryCommandDispatcherBuilder:
         self._command_handler[command_type] = command_handler
         return self
 
-    def with_policy(self, event_type, policy):
-        if event_type not in self._policies:
-            self._policies[event_type] = []
-
-        self._policies[event_type].append(policy)
-        return self
-
-    def with_projection(self, event_type, projection):
-        if event_type not in self._projections:
-            self._projections[event_type] = []
-        self._projections[event_type].append(projection)
-        return self
+    # def with_policy(self, event_type, policy):
+    #     if event_type not in self._policies:
+    #         self._policies[event_type] = []
+    #
+    #     self._policies[event_type].append(policy)
+    #     return self
+    #
+    # def with_projection(self, event_type, projection):
+    #     if event_type not in self._projections:
+    #         self._projections[event_type] = []
+    #     self._projections[event_type].append(projection)
+    #     return self
 
     def build(self) -> InMemoryCommandDispatcher:
         return InMemoryCommandDispatcher(self._command_handler, self._projections, self._policies)
