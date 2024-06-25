@@ -1,3 +1,4 @@
+import dataclasses
 import enum
 
 
@@ -7,11 +8,15 @@ class Direction(enum.Enum):
     EAST = "E"
 
 
+@dataclasses.dataclass
 class Point:
-    def __init__(self, x, y, direction: Direction):
-        self.x = x
-        self.y = y
-        self.direction = direction
+    x: int
+    y: int
+    direction: Direction
+
+    @staticmethod
+    def create(x, y, direction: Direction):
+        return Point(x=x, y=y, direction=direction)
 
     def to_string(self):
         return f"{self.x}:{self.y}:{self.direction.value}"
