@@ -15,14 +15,10 @@ class Direction(enum.Enum):
 class Point:
     x: int
     y: int
-    direction: Direction
 
     @staticmethod
-    def create(x, y, direction: Direction):
-        return Point(x=x, y=y, direction=direction)
-
-    def to_string(self):
-        return f"{self.x}:{self.y}:{self.direction.value}"
+    def create(x, y):
+        return Point(x=x, y=y)
 
 
 class MarsRoverId(AggregateId):
@@ -30,40 +26,40 @@ class MarsRoverId(AggregateId):
 
 
 @dataclasses.dataclass
-class MarsRoverAgg(Aggregate):
+class MarsRover(Aggregate):
     actual_point: Point
+    direction: Direction
     grid: Tuple[int, int]
 
     def turn_right(self):
-        match self.actual_point.direction:
+        match self.direction:
             case Direction.NORTH:
-                self.actual_point = Point(self.actual_point.x,
-                                          self.actual_point.y,
-                                          Direction.EAST)
+                self.actual_point = Point(self.actual_point.x, self.actual_point.y)
+                self.direction = Direction.EAST
 
     def turn_left(self):
-        match self.actual_point.direction:
+        match self.direction:
             case Direction.NORTH:
-                self.actual_point = Point(self.actual_point.x,
-                                          self.actual_point.y,
-                                          Direction.WEST)
+                self.actual_point = Point(self.actual_point.x, self.actual_point.y)
+                self.direction = Direction.WEST
 
     def move(self):
-        match self.actual_point.direction:
+        match self.direction:
             case Direction.NORTH:
-                self.actual_point = Point(self.actual_point.x, self.actual_point.y + 1, self.actual_point.direction)
+                self.actual_point = Point(self.actual_point.x, self.actual_point.y + 1)
             case Direction.EAST:
-                self.actual_point = Point(self.actual_point.x + 1, self.actual_point.y, self.actual_point.direction)
+                self.actual_point = Point(self.actual_point.x + 1, self.actual_point.y)
             case Direction.WEST:
                 x = self.grid[0] - abs(self.actual_point.x - 1)
-                self.actual_point = Point(x, self.actual_point.y, self.actual_point.direction)
+                self.actual_point = Point(x, self.actual_point.y)
 
     def coordinate(self):
-        return self.actual_point.to_string()
+        return f"{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"
 
     @staticmethod
-    def create(id: MarsRoverId, actual_point: Point, grid):
-        return MarsRoverAgg(id=id,
-                            version=0,
-                            actual_point=actual_point,
-                            grid=grid)
+    def create(id: MarsRoverId, actual_point: Point, direction: Direction, grid):
+        return MarsRover(id=id,
+                         version=0,
+                         actual_point=actual_point,
+                         grid=grid,
+                         direction=direction)
