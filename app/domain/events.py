@@ -1,18 +1,13 @@
 import dataclasses
 
 from app.ddd.basics import Event
-
-
-@dataclasses.dataclass
-class MarsRoverTurnedRight(Event):
-    pass
-
-
-@dataclasses.dataclass
-class MarsRoverTurnedLeft(Event):
-    pass
+from app.domain.mars_rover import MarsRoverId
 
 
 @dataclasses.dataclass
 class MarsRoverMoved(Event):
-    pass
+    id: MarsRoverId
+
+    @staticmethod
+    def create(id: MarsRoverId) -> 'MarsRoverMoved':
+        return MarsRoverMoved(id=id)

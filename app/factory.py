@@ -1,3 +1,5 @@
+from typing import List, Dict
+
 from app.domain.mars_rover import Point, Direction, MarsRover, MarsRoverId, World
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.service.mars_rover_executor import MarsRoverExecutor
@@ -20,5 +22,5 @@ def create_mars_rover(actual_point: Point = None,
     return MarsRover.create(rover_id, actual_point, direction, world)
 
 
-def create_mars_rover_executor(repository: MarsRoverRepository) -> MarsRoverExecutor:
-    return MarsRoverExecutor(repository=repository)
+def create_mars_rover_executor(repository: MarsRoverRepository, storage: List[Dict]) -> MarsRoverExecutor:
+    return MarsRoverExecutor(repository=repository, storage=storage)

@@ -2,6 +2,7 @@ import unittest
 
 from app.factory import create_mars_rover, create_mars_rover_executor
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.service.mars_rover_executor import MarsRoverExecutor
 
 
 class TestE2E(unittest.TestCase):
@@ -10,7 +11,7 @@ class TestE2E(unittest.TestCase):
         mars_rover = create_mars_rover()
         repo.save(mars_rover)
 
-        executor = create_mars_rover_executor(repository=repo)
+        executor: MarsRoverExecutor = create_mars_rover_executor(repository=repo)
 
         executor.run("RMLMM")
 

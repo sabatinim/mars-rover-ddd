@@ -1,6 +1,6 @@
 from app.ddd.basics import CommandHandler
 from app.domain.commands import TurnRight, TurnLeft, Move
-from app.domain.events import MarsRoverTurnedRight, MarsRoverTurnedLeft, MarsRoverMoved
+from app.domain.events import MarsRoverMoved
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 
 
@@ -8,36 +8,36 @@ class TurnRightCommandHandler(CommandHandler):
     def __init__(self, repo: MarsRoverRepository):
         self.repo = repo
 
-    def handle(self, command: TurnRight):
+    def handle(self, command: TurnRight) -> MarsRoverMoved:
         mars_rover = self.repo.get_mars_rover()
         mars_rover.turn_right()
 
         self.repo.save(mars_rover)
 
-        return MarsRoverTurnedRight()
+        return MarsRoverMoved.create(id=mars_rover.id)
 
 
 class TurnLeftCommandHandler(CommandHandler):
     def __init__(self, repo: MarsRoverRepository):
         self.repo = repo
 
-    def handle(self, command: TurnLeft):
+    def handle(self, command: TurnLeft) -> MarsRoverMoved:
         mars_rover = self.repo.get_mars_rover()
         mars_rover.turn_left()
 
         self.repo.save(mars_rover)
 
-        return MarsRoverTurnedLeft()
+        return MarsRoverMoved.create(id=mars_rover.id)
 
 
 class MoveCommandHandler(CommandHandler):
     def __init__(self, repo: MarsRoverRepository):
         self.repo = repo
 
-    def handle(self, command: Move):
+    def handle(self, command: Move) -> MarsRoverMoved:
         mars_rover = self.repo.get_mars_rover()
         mars_rover.move()
 
         self.repo.save(mars_rover)
 
-        return MarsRoverMoved()
+        return MarsRoverMoved.create(id=mars_rover.id)
