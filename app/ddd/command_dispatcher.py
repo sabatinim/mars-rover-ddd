@@ -1,45 +1,48 @@
-from app.ddd.basics import Command, Event
+from typing import List, Dict, Type
+
+from app.ddd.basics import Command, CommandHandler, Projection, Policy, Event
 
 
 class InMemoryCommandDispatcher:
-    def __init__(self, command_handler: dict, projections: dict, policies: dict):
-        self._command_queue = []
-        self._command_handler = command_handler
-        self._projections = projections
-        self._policies = policies
+    def __init__(self,
+                 command_handlers: Dict[Type[Command], CommandHandler],
+                 projections: Dict[Type[Event], Projection],
+                 policies: Dict[Type[Event], Policy]):
+        self.command_handlers = command_handlers
+        self.projections = projections
+        self.policies = policies
+
+        self.commands: List[Command] = []
 
     def submit(self, command: Command):
-        self._command_queue.append(command)
+        self.commands.append(command)
 
     def run(self):
-        while self._command_queue:
-            command = self._command_queue.pop(0)
+        while self.commands:
+            command = self.commands.pop(0)
             print(f"[COMMAND] {command}")
 
-            event = self._command_handler[type(command)].handle(command)
+            event: Event = self.command_handlers[type(command)].handle(command)
 
-            self.process_event(event)
+            print(f"[EVENT] {event} generated")
+            event_policies = self.policies.get(type(event), [])
+            for policy in event_policies:
+                new_command = policy.apply(event)
+                if new_command:
+                    self.commands.append(new_command)
 
-    def process_event(self, event: Event):
-        print(f"[EVENT] {event} generated")
-        event_policies = self._policies.get(type(event), [])
-        for policy in event_policies:
-            new_command = policy.apply(event)
-            if new_command:
-                self._command_queue.append(new_command)
-
-        for projection in self._projections.get(type(event), []):
-            projection.project(event)
+            for projection in self.projections.get(type(event), []):
+                projection.project(event)
 
 
 class InMemoryCommandDispatcherBuilder:
     def __init__(self):
-        self._command_handler = {}
-        self._projections = {}
-        self._policies = {}
+        self.command_handlers: Dict[Type[Command], CommandHandler] = {}
+        self.projections: Dict[Type[Event], Projection] = {}
+        self.policies: Dict[Type[Event], Policy] = {}
 
-    def with_command_handler(self, command_type, command_handler):
-        self._command_handler[command_type] = command_handler
+    def with_command_handler(self, command_type: Type[Command], command_handler: CommandHandler):
+        self.command_handlers[command_type] = command_handler
         return self
 
     # def with_policy(self, event_type, policy):
@@ -56,4 +59,6 @@ class InMemoryCommandDispatcherBuilder:
     #     return self
 
     def build(self) -> InMemoryCommandDispatcher:
-        return InMemoryCommandDispatcher(self._command_handler, self._projections, self._policies)
+        return InMemoryCommandDispatcher(command_handlers=self.command_handlers,
+                                         projections=self.projections,
+                                         policies=self.policies)

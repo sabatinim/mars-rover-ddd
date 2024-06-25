@@ -6,6 +6,10 @@ class Command:
     pass
 
 
+class Event:
+    pass
+
+
 @dataclasses.dataclass(frozen=True)
 class AggregateId:
     value: str
@@ -15,26 +19,22 @@ class AggregateId:
         return cls(value=str(uuid4()))
 
 
-class Event:
-    pass
-
-
 @dataclasses.dataclass
 class Aggregate:
     id: AggregateId
     version: int
 
 
-# class Policy:
-#     async def apply(self, event):
-#         pass
-#
-#
-# class Projection:
-#     async def project(self, event):
-#         pass
-
-
 class CommandHandler:
-    async def handle(self, command: Command):
+    def handle(self, command: Command) -> Event:
+        pass
+
+
+class Policy:
+    def apply(self, event) -> Command:
+        pass
+
+
+class Projection:
+    def project(self, event):
         pass
