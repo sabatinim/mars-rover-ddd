@@ -11,25 +11,25 @@ class InMemoryCommandDispatcher:
     def submit(self, command: Command):
         self._command_queue.append(command)
 
-    async def run(self):
+    def run(self):
         while self._command_queue:
             command = self._command_queue.pop(0)
             print(f"[COMMAND] {command}")
 
-            event = await self._command_handler[type(command)].handle(command)
+            event = self._command_handler[type(command)].handle(command)
 
-            await self.process_event(event)
+            self.process_event(event)
 
-    async def process_event(self, event: Event):
+    def process_event(self, event: Event):
         print(f"[EVENT] {event} generated")
         event_policies = self._policies.get(type(event), [])
         for policy in event_policies:
-            new_command = await policy.apply(event)
+            new_command = policy.apply(event)
             if new_command:
                 self._command_queue.append(new_command)
 
         for projection in self._projections.get(type(event), []):
-            await projection.project(event)
+            projection.project(event)
 
 
 class InMemoryCommandDispatcherBuilder:

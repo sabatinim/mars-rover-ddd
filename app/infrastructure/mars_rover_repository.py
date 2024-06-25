@@ -3,4 +3,5 @@ from app.domain.mars_rover import MarsRoverAgg
 
 
 class MarsRoverRepository(InMemoryGenericAggregateRepository[MarsRoverAgg]):
-    pass
+    def get_mars_rover(self) -> MarsRoverAgg:
+        return list(self._resources.values())[0]

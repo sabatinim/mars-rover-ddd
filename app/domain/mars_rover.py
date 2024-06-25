@@ -1,8 +1,28 @@
 import dataclasses
+import enum
 from typing import Tuple
 
 from app.ddd.basics import AggregateId, Aggregate
-from app.domain.commands import Point, Direction
+
+
+class Direction(enum.Enum):
+    NORTH = "N"
+    WEST = "W"
+    EAST = "E"
+
+
+@dataclasses.dataclass
+class Point:
+    x: int
+    y: int
+    direction: Direction
+
+    @staticmethod
+    def create(x, y, direction: Direction):
+        return Point(x=x, y=y, direction=direction)
+
+    def to_string(self):
+        return f"{self.x}:{self.y}:{self.direction.value}"
 
 
 class MarsRoverId(AggregateId):

@@ -1,6 +1,6 @@
 import unittest
 
-from app.domain.commands import Point, Direction
+from app.domain.mars_rover import Direction, Point
 from test.factory import create_mars_rover_agg
 
 

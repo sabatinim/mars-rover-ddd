@@ -3,8 +3,7 @@ import unittest
 from _pytest.outcomes import fail
 
 from app.ddd.generic_aggregate_repository import ConcurrencyException
-from app.domain.commands import Point, Direction
-from app.domain.mars_rover import MarsRoverId, MarsRoverAgg
+from app.domain.mars_rover import MarsRoverId, MarsRoverAgg, Direction, Point
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 
 

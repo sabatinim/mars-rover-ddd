@@ -1,5 +1,4 @@
-from app.domain.commands import Point, Direction
-from app.domain.mars_rover import MarsRoverId, MarsRoverAgg
+from app.domain.mars_rover import MarsRoverId, MarsRoverAgg, Direction, Point
 
 
 def create_mars_rover_agg(actual_point:Point = None):
