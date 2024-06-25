@@ -1,4 +1,4 @@
-name: python_starter-CI
+name: ddd-mars-rover-CI
 on: push
 permissions:
   contents: read
