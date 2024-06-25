@@ -2,40 +2,18 @@ import unittest
 
 from app.domain.command_handlers import MarsRoverExecutor
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
-from test.factory import create_mars_rover_agg
+from app.factory import create_mars_rover
 
 
 class TestE2E(unittest.TestCase):
-    def test_turn_right(self):
+    def test_execute_some_commands(self):
         repo = MarsRoverRepository()
-        mars_rover = create_mars_rover_agg()
+        mars_rover = create_mars_rover()
         repo.save(mars_rover)
 
         executor = MarsRoverExecutor(repo)
 
-        executor.run("R")
+        executor.run("RMLMM")
 
         actual = repo.get_mars_rover()
-        self.assertEqual(actual.coordinate(), "0:0:E")
-
-    def test_turn_left(self):
-        repo = MarsRoverRepository()
-        mars_rover = create_mars_rover_agg()
-        repo.save(mars_rover)
-
-        executor = MarsRoverExecutor(repo)
-
-        executor.run("L")
-
-        actual = repo.get_mars_rover()
-        self.assertEqual(actual.coordinate(), "0:0:W")
-
-    def test_move(self):
-        repo = MarsRoverRepository()
-        mars_rover = create_mars_rover_agg()
-        repo.save(mars_rover)
-
-        executor = MarsRoverExecutor(repo)
-        executor.run("MM")
-        actual = repo.get_mars_rover()
-        self.assertEqual(actual.coordinate(), "0:2:N")
+        self.assertEqual(actual.coordinate(), "1:2:N")

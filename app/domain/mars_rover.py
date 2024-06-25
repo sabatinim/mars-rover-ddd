@@ -27,10 +27,19 @@ class MarsRoverId(AggregateId):
 
 
 @dataclasses.dataclass
+class World:
+    dimension: Tuple[int, int]
+
+    @staticmethod
+    def create(dimension: Tuple[int, int]):
+        return World(dimension=dimension)
+
+
+@dataclasses.dataclass
 class MarsRover(Aggregate):
     actual_point: Point
     direction: Direction
-    grid: Tuple[int, int]
+    world: World
 
     def turn_right(self):
         match self.direction:
@@ -57,21 +66,21 @@ class MarsRover(Aggregate):
     def move(self):
         match self.direction:
             case Direction.NORTH:
-                self.actual_point.y = (self.actual_point.y + 1) % self.grid[1]
+                self.actual_point.y = (self.actual_point.y + 1) % self.world.dimension[1]
             case Direction.SOUTH:
-                self.actual_point.y = (self.actual_point.y - 1) % self.grid[1]
+                self.actual_point.y = (self.actual_point.y - 1) % self.world.dimension[1]
             case Direction.WEST:
-                self.actual_point.x = (self.actual_point.x - 1) % self.grid[0]
+                self.actual_point.x = (self.actual_point.x - 1) % self.world.dimension[0]
             case Direction.EAST:
-                self.actual_point.x = (self.actual_point.x + 1) % self.grid[0]
+                self.actual_point.x = (self.actual_point.x + 1) % self.world.dimension[0]
 
     def coordinate(self):
         return f"{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"
 
     @staticmethod
-    def create(id: MarsRoverId, actual_point: Point, direction: Direction, grid):
+    def create(id: MarsRoverId, actual_point: Point, direction: Direction, world: World):
         return MarsRover(id=id,
                          version=0,
                          actual_point=actual_point,
-                         grid=grid,
+                         world=world,
                          direction=direction)
