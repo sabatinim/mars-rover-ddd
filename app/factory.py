@@ -1,4 +1,6 @@
 from app.domain.mars_rover import Point, Direction, MarsRover, MarsRoverId, World
+from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.service.mars_rover_executor import MarsRoverExecutor
 
 
 def create_mars_rover(actual_point: Point = None,
@@ -16,3 +18,7 @@ def create_mars_rover(actual_point: Point = None,
         world = World.create(dimension=(4, 4))
 
     return MarsRover.create(rover_id, actual_point, direction, world)
+
+
+def create_mars_rover_executor(repository: MarsRoverRepository) -> MarsRoverExecutor:
+    return MarsRoverExecutor(repository=repository)
