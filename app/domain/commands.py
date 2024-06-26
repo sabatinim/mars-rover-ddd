@@ -14,7 +14,6 @@ class StartMarsRover(Command):
     world: World
 
 
-
 @dataclasses.dataclass
 class TurnRight(Command):
     id: MarsRoverId

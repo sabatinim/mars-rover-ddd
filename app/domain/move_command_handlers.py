@@ -12,7 +12,6 @@ class MoveCommandHandler(CommandHandler):
     def handle(self, command: Move) -> MarsRoverMoved:
         mars_rover: MarsRover = self.repo.get_by_id(command.id)
         event = mars_rover.move()
-
         self.repo.save(mars_rover)
 
         return event

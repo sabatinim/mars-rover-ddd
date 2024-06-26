@@ -12,7 +12,6 @@ class TurnLeftCommandHandler(CommandHandler):
     def handle(self, command: TurnLeft) -> MarsRoverMoved:
         mars_rover: MarsRover = self.repo.get_by_id(command.id)
         event = mars_rover.turn_left()
-
         self.repo.save(mars_rover)
 
         return event

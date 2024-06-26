@@ -11,14 +11,11 @@ class StartMarsRoverCommandHandler(CommandHandler):
         self.repo = repo
 
     def handle(self, command: StartMarsRover) -> MarsRoverStarted:
-        rover_id = MarsRoverId.new()
-
-        mars_rover: MarsRover = MarsRover.create(rover_id,
+        mars_rover: MarsRover = MarsRover.create(id=MarsRoverId.new(),
                                                  actual_point=command.initial_point,
                                                  direction=command.initial_direction,
                                                  world=command.world)
         event = mars_rover.start()
-
         self.repo.save(mars_rover)
 
         return event
