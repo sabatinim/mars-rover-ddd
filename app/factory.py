@@ -7,8 +7,10 @@ from app.service.mars_rover_executor import MarsRoverExecutor
 
 def create_mars_rover(actual_point: Point = None,
                       direction: Direction = None,
-                      world=None) -> MarsRover:
-    rover_id = MarsRoverId.new()
+                      world=None,
+                      rover_id:MarsRoverId=None) -> MarsRover:
+    if rover_id is None:
+        rover_id = MarsRoverId.new()
 
     if actual_point is None:
         actual_point = Point.create(0, 0)

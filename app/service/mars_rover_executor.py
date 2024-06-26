@@ -8,16 +8,19 @@ from app.infrastructure.mars_rover_path_projection import MarsRoverPathProjectio
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 
 
-def create_command_dispatcher(repository: MarsRoverRepository, storage: List[Dict]) -> InMemoryCommandDispatcher:
+def create_command_dispatcher(repository: MarsRoverRepository,
+                              path_projection_storage: List[Dict]) -> InMemoryCommandDispatcher:
     turn_right_command_handler = TurnRightCommandHandler(repo=repository)
     turn_left_command_handler = TurnLeftCommandHandler(repo=repository)
     move_command_handler = MoveCommandHandler(repo=repository)
+
+    rover_path_projection = MarsRoverPathProjection(repo=repository, storage=path_projection_storage)
 
     return (InMemoryCommandDispatcherBuilder()
             .with_command_handler(TurnRight, turn_right_command_handler)
             .with_command_handler(TurnLeft, turn_left_command_handler)
             .with_command_handler(Move, move_command_handler)
-            .with_projection(MarsRoverMoved, MarsRoverPathProjection(repo=repository, storage=storage))
+            .with_projection(MarsRoverMoved, rover_path_projection)
             .build())
 
 
