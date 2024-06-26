@@ -1,7 +1,7 @@
 from app.ddd.basics import CommandHandler
-from app.domain.commands import TurnRight
+from app.command_handlers.commands import TurnRight
 from app.domain.events import MarsRoverMoved, ObstacleFound
-from app.domain.mars_rover.mars_rover import MarsRover
+from app.domain.mars_rover import MarsRover
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 
 

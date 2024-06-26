@@ -1,8 +1,8 @@
 from typing import List, Dict
 
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher
-from app.domain.commands import TurnRight, TurnLeft, Move
-from app.domain.mars_rover.mars_rover_id import MarsRoverId
+from app.command_handlers.commands import TurnRight, TurnLeft, Move
+from app.domain.mars_rover_id import MarsRoverId
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.workflow_factory import create_command_dispatcher
 

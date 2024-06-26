@@ -1,16 +1,16 @@
 import unittest
 
-from app.domain.commands import TurnRight, TurnLeft, Move, StartMarsRover
+from app.command_handlers.commands import TurnRight, TurnLeft, Move, StartMarsRover
 from app.domain.events import MarsRoverMoved, MarsRoverStarted
-from app.domain.mars_rover.direction import Direction
-from app.domain.mars_rover.mars_rover import MarsRover
-from app.domain.mars_rover.obstacles import Obstacles
-from app.domain.mars_rover.point import Point
-from app.domain.mars_rover.world import World
-from app.domain.move_command_handlers import MoveCommandHandler
-from app.domain.start_mars_rover_command_handlers import StartMarsRoverCommandHandler
-from app.domain.turn_left_command_handlers import TurnLeftCommandHandler
-from app.domain.turn_right_command_handlers import TurnRightCommandHandler
+from app.domain.direction import Direction
+from app.domain.mars_rover import MarsRover
+from app.domain.obstacles import Obstacles
+from app.domain.point import Point
+from app.domain.world import World
+from app.command_handlers.move_command_handlers import MoveCommandHandler
+from app.command_handlers.start_mars_rover_command_handlers import StartMarsRoverCommandHandler
+from app.command_handlers.turn_left_command_handlers import TurnLeftCommandHandler
+from app.command_handlers.turn_right_command_handlers import TurnRightCommandHandler
 from app.factory import create_mars_rover
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 

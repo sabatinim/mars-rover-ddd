@@ -1,6 +1,6 @@
 import unittest
 
-from app.domain.mars_rover.mars_rover import MarsRover
+from app.domain.mars_rover import MarsRover
 from app.factory import create_mars_rover_executor, create_mars_rover_starter
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.service.mars_rover_executor import MarsRoverRunner

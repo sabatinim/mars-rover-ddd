@@ -1,7 +1,7 @@
 import unittest
 
-from app.domain.mars_rover.obstacles import Obstacles
-from app.domain.mars_rover.point import Point
+from app.domain.obstacles import Obstacles
+from app.domain.point import Point
 from app.factory import create_mars_rover
 
 

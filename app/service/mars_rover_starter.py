@@ -1,11 +1,11 @@
 from typing import List, Dict
 
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher
-from app.domain.commands import StartMarsRover
-from app.domain.mars_rover.direction import Direction
-from app.domain.mars_rover.obstacles import Obstacles
-from app.domain.mars_rover.point import Point
-from app.domain.mars_rover.world import World
+from app.command_handlers.commands import StartMarsRover
+from app.domain.direction import Direction
+from app.domain.obstacles import Obstacles
+from app.domain.point import Point
+from app.domain.world import World
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.workflow_factory import create_command_dispatcher
 

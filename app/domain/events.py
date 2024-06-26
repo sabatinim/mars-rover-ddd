@@ -1,7 +1,7 @@
 import dataclasses
 
 from app.ddd.basics import Event
-from app.domain.mars_rover.mars_rover_id import MarsRoverId
+from app.domain.mars_rover_id import MarsRoverId
 
 
 @dataclasses.dataclass

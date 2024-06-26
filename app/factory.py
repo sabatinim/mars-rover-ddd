@@ -1,11 +1,11 @@
 from typing import List, Dict
 
-from app.domain.mars_rover.direction import Direction
-from app.domain.mars_rover.mars_rover import MarsRover
-from app.domain.mars_rover.mars_rover_id import MarsRoverId
-from app.domain.mars_rover.obstacles import Obstacles
-from app.domain.mars_rover.point import Point
-from app.domain.mars_rover.world import World
+from app.domain.direction import Direction
+from app.domain.mars_rover import MarsRover
+from app.domain.mars_rover_id import MarsRoverId
+from app.domain.obstacles import Obstacles
+from app.domain.point import Point
+from app.domain.world import World
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.service.mars_rover_executor import MarsRoverRunner
 from app.service.mars_rover_starter import MarsRoverStarter

@@ -1,7 +1,7 @@
 import dataclasses
 from typing import List
 
-from app.domain.mars_rover.point import Point
+from app.domain.point import Point
 
 
 @dataclasses.dataclass

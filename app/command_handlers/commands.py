@@ -1,10 +1,10 @@
 import dataclasses
 
 from app.ddd.basics import Command
-from app.domain.mars_rover.direction import Direction
-from app.domain.mars_rover.mars_rover_id import MarsRoverId
-from app.domain.mars_rover.point import Point
-from app.domain.mars_rover.world import World
+from app.domain.direction import Direction
+from app.domain.mars_rover_id import MarsRoverId
+from app.domain.point import Point
+from app.domain.world import World
 
 
 @dataclasses.dataclass

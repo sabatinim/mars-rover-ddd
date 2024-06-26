@@ -3,10 +3,10 @@ import enum
 
 from app.ddd.basics import Aggregate
 from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted
-from app.domain.mars_rover.direction import Direction
-from app.domain.mars_rover.mars_rover_id import MarsRoverId
-from app.domain.mars_rover.point import Point
-from app.domain.mars_rover.world import World
+from app.domain.direction import Direction
+from app.domain.mars_rover_id import MarsRoverId
+from app.domain.point import Point
+from app.domain.world import World
 
 
 class MarsRoverStatus(enum.Enum):
