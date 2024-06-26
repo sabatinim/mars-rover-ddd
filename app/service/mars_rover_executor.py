@@ -1,7 +1,9 @@
 from typing import List, Dict
 
 from app.ddd.command_dispatcher import InMemoryCommandDispatcherBuilder, InMemoryCommandDispatcher
-from app.domain.command_handlers import TurnRightCommandHandler, TurnLeftCommandHandler, MoveCommandHandler
+from app.domain.turn_right_command_handlers import TurnRightCommandHandler
+from app.domain.turn_left_command_handlers import TurnLeftCommandHandler
+from app.domain.move_command_handlers import MoveCommandHandler
 from app.domain.commands import TurnRight, TurnLeft, Move
 from app.domain.events import MarsRoverMoved
 from app.infrastructure.mars_rover_path_projection import MarsRoverPathProjection
