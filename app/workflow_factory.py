@@ -1,17 +1,17 @@
 from typing import List, Dict
 
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher, InMemoryCommandDispatcherBuilder
-from app.command_handlers.commands import TurnRight, TurnLeft, Move, StartMarsRover, NotifyObstacle
+from app.command_handler.commands import TurnRight, TurnLeft, Move, StartMarsRover, NotifyObstacle
+from app.command_handler.move_command_handlers import MoveCommandHandler
+from app.command_handler.notify_obstacle_command_handler import NotifyObstacleCommandHandler
+from app.command_handler.start_mars_rover_command_handlers import StartMarsRoverCommandHandler
+from app.command_handler.turn_left_command_handlers import TurnLeftCommandHandler
+from app.command_handler.turn_right_command_handlers import TurnRightCommandHandler
+from app.projection.mars_rover_path_projection import MarsRoverPathProjection
+from app.projection.mars_rover_start_projection import MarsRoverStartProjection
+from app.policy.policies import NotifyObstacleFoundPolicy
 from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted
-from app.command_handlers.move_command_handlers import MoveCommandHandler
-from app.command_handlers.notify_obstacle_command_handler import NotifyObstacleCommandHandler
-from app.policies.policies import NotifyObstacleFoundPolicy
-from app.command_handlers.start_mars_rover_command_handlers import StartMarsRoverCommandHandler
-from app.command_handlers.turn_left_command_handlers import TurnLeftCommandHandler
-from app.command_handlers.turn_right_command_handlers import TurnRightCommandHandler
-from app.projections.mars_rover_path_projection import MarsRoverPathProjection
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
-from app.projections.mars_rover_start_projection import MarsRoverStartProjection
 
 
 def create_command_dispatcher(repository: MarsRoverRepository,

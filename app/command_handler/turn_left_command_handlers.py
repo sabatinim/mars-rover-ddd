@@ -1,5 +1,5 @@
 from app.ddd.basics import CommandHandler
-from app.command_handlers.commands import TurnLeft
+from app.command_handler.commands import TurnLeft
 from app.domain.events import MarsRoverMoved
 from app.domain.mars_rover import MarsRover
 from app.infrastructure.mars_rover_repository import MarsRoverRepository

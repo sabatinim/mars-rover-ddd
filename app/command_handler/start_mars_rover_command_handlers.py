@@ -1,5 +1,5 @@
 from app.ddd.basics import CommandHandler
-from app.command_handlers.commands import StartMarsRover
+from app.command_handler.commands import StartMarsRover
 from app.domain.events import MarsRoverStarted
 from app.domain.mars_rover import MarsRover
 from app.domain.mars_rover_id import MarsRoverId

@@ -1,7 +1,7 @@
 from typing import List, Dict
 
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher
-from app.command_handlers.commands import StartMarsRover
+from app.command_handler.commands import StartMarsRover
 from app.domain.direction import Direction
 from app.domain.obstacles import Obstacles
 from app.domain.point import Point
