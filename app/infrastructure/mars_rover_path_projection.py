@@ -2,7 +2,7 @@ from typing import List, Dict
 
 from app.ddd.basics import Projection
 from app.domain.events import MarsRoverMoved
-from app.domain.mars_rover import MarsRover
+from app.domain.mars_rover.mars_rover import MarsRover
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 
 

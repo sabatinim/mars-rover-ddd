@@ -10,11 +10,11 @@ class TurnRightCommandHandler(CommandHandler):
 
     def handle(self, command: TurnRight) -> MarsRoverMoved:
         mars_rover = self.repo.get_mars_rover()
-        mars_rover.turn_right()
+        event = mars_rover.turn_right()
 
         self.repo.save(mars_rover)
 
-        return MarsRoverMoved.create(id=mars_rover.id)
+        return event
 
 
 class TurnLeftCommandHandler(CommandHandler):
@@ -23,11 +23,11 @@ class TurnLeftCommandHandler(CommandHandler):
 
     def handle(self, command: TurnLeft) -> MarsRoverMoved:
         mars_rover = self.repo.get_mars_rover()
-        mars_rover.turn_left()
+        event = mars_rover.turn_left()
 
         self.repo.save(mars_rover)
 
-        return MarsRoverMoved.create(id=mars_rover.id)
+        return event
 
 
 class MoveCommandHandler(CommandHandler):
@@ -36,8 +36,8 @@ class MoveCommandHandler(CommandHandler):
 
     def handle(self, command: Move) -> MarsRoverMoved:
         mars_rover = self.repo.get_mars_rover()
-        mars_rover.move()
+        event = mars_rover.move()
 
         self.repo.save(mars_rover)
 
-        return MarsRoverMoved.create(id=mars_rover.id)
+        return event

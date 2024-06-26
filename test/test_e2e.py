@@ -1,6 +1,7 @@
 import unittest
 
-from app.domain.mars_rover import MarsRover, MarsRoverId
+from app.domain.mars_rover.mars_rover import MarsRover
+from app.domain.mars_rover.mars_rover_id import MarsRoverId
 from app.factory import create_mars_rover, create_mars_rover_executor
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.service.mars_rover_executor import MarsRoverExecutor
@@ -10,7 +11,8 @@ class TestE2E(unittest.TestCase):
     def test_execute_some_commands(self):
         repo = MarsRoverRepository()
         path_storage = []
-        mars_rover = create_mars_rover(rover_id=MarsRoverId("aaa"))
+
+        mars_rover: MarsRover = create_mars_rover(rover_id=MarsRoverId("aaa"))
         repo.save(mars_rover)
 
         executor: MarsRoverExecutor = create_mars_rover_executor(repository=repo,
