@@ -2,7 +2,7 @@ import dataclasses
 import enum
 
 from app.ddd.basics import Aggregate
-from app.domain.events import MarsRoverMoved, ObstacleFound
+from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted
 from app.domain.mars_rover.direction import Direction
 from app.domain.mars_rover.mars_rover_id import MarsRoverId
 from app.domain.mars_rover.point import Point
@@ -10,8 +10,9 @@ from app.domain.mars_rover.world import World
 
 
 class MarsRoverStatus(enum.Enum):
-    NO_OBSTACLES = "NO_OBSTACLES"
-    OBSTACLES = "OBSTACLES"
+    STARTED = "STARTED"
+    MOVING = "MOVING"
+    OBSTACLE_HIT = "OBSTACLE_HIT"
 
 
 @dataclasses.dataclass
@@ -19,10 +20,14 @@ class MarsRover(Aggregate):
     actual_point: Point
     direction: Direction
     world: World
-    status: MarsRoverStatus = MarsRoverStatus.NO_OBSTACLES
+    status: MarsRoverStatus | None
 
     def there_was_an_obstacle(self):
-        return self.status == MarsRoverStatus.OBSTACLES
+        return self.status == MarsRoverStatus.OBSTACLE_HIT
+
+    def start(self) -> MarsRoverStarted:
+        self.status = MarsRoverStatus.STARTED
+        return MarsRoverStarted.create(self.id)
 
     def turn_right(self) -> ObstacleFound | MarsRoverMoved:
         if self.there_was_an_obstacle():
@@ -37,7 +42,7 @@ class MarsRover(Aggregate):
                 self.direction = Direction.NORTH
             case Direction.EAST:
                 self.direction = Direction.SOUTH
-
+        self.status = MarsRoverStatus.MOVING
         return MarsRoverMoved.create(id=self.id)
 
     def turn_left(self) -> ObstacleFound | MarsRoverMoved:
@@ -54,6 +59,7 @@ class MarsRover(Aggregate):
             case Direction.EAST:
                 self.direction = Direction.NORTH
 
+        self.status = MarsRoverStatus.MOVING
         return MarsRoverMoved.create(id=self.id)
 
     def move(self) -> MarsRoverMoved | ObstacleFound:
@@ -75,10 +81,11 @@ class MarsRover(Aggregate):
                 next_point = Point.create(next_x, self.actual_point.y)
 
         if self.world.hit_obstacles(next_point) or self.there_was_an_obstacle():
-            self.status = MarsRoverStatus.OBSTACLES
+            self.status = MarsRoverStatus.OBSTACLE_HIT
             return ObstacleFound.create(self.id)
         else:
             self.actual_point = next_point
+            self.status = MarsRoverStatus.MOVING
             return MarsRoverMoved.create(id=self.id)
 
     def coordinate(self):
@@ -92,4 +99,5 @@ class MarsRover(Aggregate):
                          version=0,
                          actual_point=actual_point,
                          world=world,
-                         direction=direction)
+                         direction=direction,
+                         status=None)

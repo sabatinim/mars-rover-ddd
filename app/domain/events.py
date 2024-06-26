@@ -5,6 +5,15 @@ from app.domain.mars_rover.mars_rover_id import MarsRoverId
 
 
 @dataclasses.dataclass
+class MarsRoverStarted(Event):
+    id: MarsRoverId
+
+    @staticmethod
+    def create(id: MarsRoverId) -> 'MarsRoverStarted':
+        return MarsRoverStarted(id=id)
+
+
+@dataclasses.dataclass
 class MarsRoverMoved(Event):
     id: MarsRoverId
 

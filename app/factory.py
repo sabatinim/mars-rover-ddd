@@ -7,7 +7,8 @@ from app.domain.mars_rover.obstacles import Obstacles
 from app.domain.mars_rover.point import Point
 from app.domain.mars_rover.world import World
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
-from app.service.mars_rover_executor import MarsRoverExecutor
+from app.service.mars_rover_executor import MarsRoverRunner
+from app.service.mars_rover_starter import MarsRoverStarter
 
 
 def create_mars_rover(actual_point: Point = None,
@@ -33,5 +34,9 @@ def create_mars_rover(actual_point: Point = None,
     return MarsRover.create(rover_id, actual_point, direction, world)
 
 
-def create_mars_rover_executor(repository: MarsRoverRepository, storage: List[Dict]) -> MarsRoverExecutor:
-    return MarsRoverExecutor(repository=repository, storage=storage)
+def create_mars_rover_executor(repository: MarsRoverRepository, storage: List[Dict]) -> MarsRoverRunner:
+    return MarsRoverRunner(repository=repository, storage=storage)
+
+
+def create_mars_rover_starter(repository, storage) -> MarsRoverStarter:
+    return MarsRoverStarter(repository=repository, storage=storage)
