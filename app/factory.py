@@ -25,7 +25,7 @@ def create_mars_rover(actual_point: Point = None,
         direction = Direction.NORTH
 
     if obstacles is None:
-        obstacles = Obstacles.create(points=[Point.create(3, 3)])
+        obstacles = Obstacles.create(points=[Point.create(2, 2)])
 
     if world is None:
         world = World.create(dimension=(4, 4), obstacles=obstacles)

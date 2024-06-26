@@ -9,7 +9,7 @@ if __name__ == "__main__":
                 "actual_point": mars_rover.coordinate()}]
 
     create_mars_rover_executor(repository=repository,
-                               storage=storage).run("RMLMM")
+                               storage=storage).run("RMMLMMMMLMMM")
 
     actual = repository.get_mars_rover()
     print(actual.coordinate())
