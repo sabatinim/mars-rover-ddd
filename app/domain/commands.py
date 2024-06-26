@@ -1,22 +1,24 @@
 import dataclasses
 
 from app.ddd.basics import Command
+from app.domain.mars_rover.mars_rover_id import MarsRoverId
 
 
 @dataclasses.dataclass
 class TurnRight(Command):
-    pass
+    id: MarsRoverId
 
 
 @dataclasses.dataclass
 class TurnLeft(Command):
-    pass
+    id: MarsRoverId
 
 
 @dataclasses.dataclass
 class Move(Command):
-    pass
+    id: MarsRoverId
+
 
 @dataclasses.dataclass
 class NotifyObstacle(Command):
-    message:str
+    message: str

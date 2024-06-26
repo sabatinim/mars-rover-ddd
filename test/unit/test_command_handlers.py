@@ -15,7 +15,7 @@ class TestMarsCommandHandler(unittest.TestCase):
     def test_turn_right_command_handler(self):
         repo = self._setup()
 
-        event = TurnRightCommandHandler(repo=repo).handle(TurnRight())
+        event = TurnRightCommandHandler(repo=repo).handle(TurnRight(MarsRoverId(value='aaa')))
 
         self._assert_event(event)
         self._assert_version(repo)
@@ -23,7 +23,7 @@ class TestMarsCommandHandler(unittest.TestCase):
     def test_turn_left_command_handler(self):
         repo = self._setup()
 
-        event = TurnLeftCommandHandler(repo=repo).handle(TurnLeft())
+        event = TurnLeftCommandHandler(repo=repo).handle(TurnLeft(MarsRoverId(value='aaa')))
 
         self._assert_event(event)
         self._assert_version(repo)
@@ -31,7 +31,7 @@ class TestMarsCommandHandler(unittest.TestCase):
     def test_move_command_handler(self):
         repo = self._setup()
 
-        event = MoveCommandHandler(repo=repo).handle(Move())
+        event = MoveCommandHandler(repo=repo).handle(Move(MarsRoverId(value='aaa')))
 
         self._assert_event(event)
         self._assert_version(repo)

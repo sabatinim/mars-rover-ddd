@@ -20,7 +20,7 @@ class TestE2E(unittest.TestCase):
         executor: MarsRoverExecutor = create_mars_rover_executor(repository=repo,
                                                                  storage=path_storage)
 
-        executor.run("RMLMM")
+        executor.run("aaa", "RMLMM")
 
         actual: MarsRover = repo.get_mars_rover()
         self.assertEqual("1:2:N", actual.coordinate())
@@ -44,7 +44,7 @@ class TestE2E(unittest.TestCase):
         executor: MarsRoverExecutor = create_mars_rover_executor(repository=repo,
                                                                  storage=path_storage)
 
-        executor.run("RMLMMMMMM")
+        executor.run("aaa", "RMLMMMMMM")
 
         actual: MarsRover = repo.get_mars_rover()
         self.assertEqual("O:1:0:N", actual.coordinate())

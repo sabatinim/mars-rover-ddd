@@ -3,6 +3,7 @@ from typing import List, Dict
 from app.ddd.command_dispatcher import InMemoryCommandDispatcherBuilder, InMemoryCommandDispatcher
 from app.domain.commands import TurnRight, TurnLeft, Move, NotifyObstacle
 from app.domain.events import MarsRoverMoved, ObstacleFound
+from app.domain.mars_rover.mars_rover_id import MarsRoverId
 from app.domain.move_command_handlers import MoveCommandHandler
 from app.domain.notify_obstacle_command_handler import NotifyObstacleCommandHandler
 from app.domain.policies import NotifyObstacleFoundPolicy
@@ -36,10 +37,10 @@ def create_command_dispatcher(repository: MarsRoverRepository,
 class MarsRoverExecutor:
     def __init__(self, repository: MarsRoverRepository, storage: List[Dict]):
         self.command_dispatcher: InMemoryCommandDispatcher = create_command_dispatcher(repository, storage)
-        self.command_map = {"R": TurnRight(), "L": TurnLeft(), "M": Move()}
+        self.command_map = {"R": TurnRight, "L": TurnLeft, "M": Move}
 
-    def run(self, commands: str):
-        parsed_commands = [self.command_map[c] for c in commands]
+    def run(self, rover_id: str, commands: str):
+        parsed_commands = [self.command_map[c](MarsRoverId(rover_id)) for c in commands]
 
         self.command_dispatcher.submit(commands=parsed_commands)
 
