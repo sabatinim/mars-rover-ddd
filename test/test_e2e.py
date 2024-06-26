@@ -1,6 +1,7 @@
 import unittest
 
 from app.domain.mars_rover import MarsRover
+from app.domain.mars_rover_id import MarsRoverId
 from app.factory import create_mars_rover_executor, create_mars_rover_starter
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.service.mars_rover_executor import MarsRoverRunner
@@ -20,7 +21,7 @@ class TestE2E(unittest.TestCase):
         executor: MarsRoverRunner = create_mars_rover_executor(repository=repo, storage=projections_storage)
         executor.run(id, "RMLMM")
 
-        actual: MarsRover = repo.get_mars_rover()
+        actual: MarsRover = repo.get_by_id(MarsRoverId(id))
         self.assertEqual("1:2:N", actual.coordinate())
         self.assertEqual("MOVING", actual.status.value)
 
@@ -41,7 +42,7 @@ class TestE2E(unittest.TestCase):
         executor: MarsRoverRunner = create_mars_rover_executor(repository=repo, storage=projections_storage)
         executor.run(id, "RMMLMMMMMM")
 
-        actual: MarsRover = repo.get_mars_rover()
+        actual: MarsRover = repo.get_by_id(MarsRoverId(id))
         self.assertEqual("O:2:1:N", actual.coordinate())
         self.assertEqual("OBSTACLE_HIT", actual.status.value)
 
