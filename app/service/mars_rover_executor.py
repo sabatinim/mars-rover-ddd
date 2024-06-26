@@ -5,7 +5,7 @@ from app.domain.commands import TurnRight, TurnLeft, Move, NotifyObstacle
 from app.domain.events import MarsRoverMoved, ObstacleFound
 from app.domain.move_command_handlers import MoveCommandHandler
 from app.domain.notify_obstacle_command_handler import NotifyObstacleCommandHandler
-from app.domain.policies import ObstacleFoundPolicy
+from app.domain.policies import NotifyObstacleFoundPolicy
 from app.domain.turn_left_command_handlers import TurnLeftCommandHandler
 from app.domain.turn_right_command_handlers import TurnRightCommandHandler
 from app.infrastructure.mars_rover_path_projection import MarsRoverPathProjection
@@ -21,7 +21,7 @@ def create_command_dispatcher(repository: MarsRoverRepository,
 
     rover_path_projection = MarsRoverPathProjection(repo=repository, storage=path_projection_storage)
 
-    obstacle_found_policy = ObstacleFoundPolicy()
+    obstacle_found_policy = NotifyObstacleFoundPolicy()
 
     return (InMemoryCommandDispatcherBuilder()
             .with_command_handler(TurnRight, turn_right_command_handler)
