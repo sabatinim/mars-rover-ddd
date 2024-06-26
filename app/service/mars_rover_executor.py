@@ -41,7 +41,6 @@ class MarsRoverExecutor:
     def run(self, commands: str):
         parsed_commands = [self.command_map[c] for c in commands]
 
-        for c in parsed_commands:
-            self.command_dispatcher.submit(c)
+        self.command_dispatcher.submit(commands=parsed_commands)
 
         self.command_dispatcher.run()
