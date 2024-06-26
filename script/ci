@@ -20,7 +20,7 @@ log "Check for unused/dead code"
 compose run mars-rover vulture app/ test/ whitelist.py
 
 log "Running tests"
-compose run mars-rover pytest
+compose run mars-rover pytest -s -vv --durations=50
 
 log "Shutdown containers"
 docker network prune --force && compose down --remove-orphans --volumes
