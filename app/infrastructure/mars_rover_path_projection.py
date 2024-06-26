@@ -14,6 +14,6 @@ class MarsRoverPathProjection(Projection):
     def project(self, event: MarsRoverMoved):
         mars_rover: MarsRover = self.repo.get_by_id(event.id)
 
-        raw = {"id": mars_rover.id.value,
-               "actual_point": mars_rover.coordinate()}
+        raw = {"id": mars_rover.id.value, "actual_point": mars_rover.coordinate()}
+
         self.storage.append(raw)

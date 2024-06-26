@@ -16,3 +16,7 @@ class TurnLeft(Command):
 @dataclasses.dataclass
 class Move(Command):
     pass
+
+@dataclasses.dataclass
+class NotifyObstacle(Command):
+    message:str

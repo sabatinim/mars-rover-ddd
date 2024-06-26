@@ -1,11 +1,13 @@
 from typing import List, Dict
 
 from app.ddd.command_dispatcher import InMemoryCommandDispatcherBuilder, InMemoryCommandDispatcher
-from app.domain.turn_right_command_handlers import TurnRightCommandHandler
-from app.domain.turn_left_command_handlers import TurnLeftCommandHandler
+from app.domain.commands import TurnRight, TurnLeft, Move, NotifyObstacle
+from app.domain.events import MarsRoverMoved, ObstacleFound
 from app.domain.move_command_handlers import MoveCommandHandler
-from app.domain.commands import TurnRight, TurnLeft, Move
-from app.domain.events import MarsRoverMoved
+from app.domain.notify_obstacle_command_handler import NotifyObstacleCommandHandler
+from app.domain.policies import ObstacleFoundPolicy
+from app.domain.turn_left_command_handlers import TurnLeftCommandHandler
+from app.domain.turn_right_command_handlers import TurnRightCommandHandler
 from app.infrastructure.mars_rover_path_projection import MarsRoverPathProjection
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 
@@ -15,14 +17,19 @@ def create_command_dispatcher(repository: MarsRoverRepository,
     turn_right_command_handler = TurnRightCommandHandler(repo=repository)
     turn_left_command_handler = TurnLeftCommandHandler(repo=repository)
     move_command_handler = MoveCommandHandler(repo=repository)
+    notify_obstacle_command_handler = NotifyObstacleCommandHandler()
 
     rover_path_projection = MarsRoverPathProjection(repo=repository, storage=path_projection_storage)
+
+    obstacle_found_policy = ObstacleFoundPolicy()
 
     return (InMemoryCommandDispatcherBuilder()
             .with_command_handler(TurnRight, turn_right_command_handler)
             .with_command_handler(TurnLeft, turn_left_command_handler)
             .with_command_handler(Move, move_command_handler)
+            .with_command_handler(NotifyObstacle, notify_obstacle_command_handler)
             .with_projection(MarsRoverMoved, rover_path_projection)
+            .with_policy(ObstacleFound, obstacle_found_policy)
             .build())
 
 
