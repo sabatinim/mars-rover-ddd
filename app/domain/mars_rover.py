@@ -28,9 +28,9 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.STARTED
         return MarsRoverStarted.create(self.id)
 
-    def turn_right(self) -> MarsRoverMoved | MarsRoverTurnedOff:
+    def turn_right(self) -> MarsRoverMoved | None:
         if self._is_turned_off_for_an_obstacle():
-            return MarsRoverTurnedOff.create(self.id)
+            return None
 
         match self.direction:
             case Direction.NORTH:
@@ -44,9 +44,9 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.MOVING
         return MarsRoverMoved.create(id=self.id)
 
-    def turn_left(self) -> MarsRoverMoved | MarsRoverTurnedOff:
+    def turn_left(self) -> MarsRoverMoved | None:
         if self._is_turned_off_for_an_obstacle():
-            return MarsRoverTurnedOff.create(self.id)
+            return None
 
         match self.direction:
             case Direction.NORTH:
@@ -61,9 +61,9 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.MOVING
         return MarsRoverMoved.create(id=self.id)
 
-    def move(self) -> MarsRoverMoved | ObstacleFound | MarsRoverTurnedOff:
+    def move(self) -> MarsRoverMoved | ObstacleFound | None:
         if self._is_turned_off_for_an_obstacle():
-            return MarsRoverTurnedOff.create(self.id)
+            return None
 
         match self.direction:
             case Direction.NORTH:
