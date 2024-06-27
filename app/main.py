@@ -23,38 +23,43 @@ def group_by(storage):
 
 
 if __name__ == "__main__":
+    number_of_rovers = 1
+    commands_length = 6
+    world_dimension = (10, 10)
+    obstacles = [(1, 2)]
+
     repository = MarsRoverRepository()
     paths = []
     obstacles = []
+    mars_rover_ids = []
 
     runner = (
         MarsRoverRunner(repository=repository,
                         path_projection_storage=paths,
-                        obstacles_projection_storage=obstacles)
+                        obstacles_projection_storage=obstacles,
+                        mars_rover_projection_storage=mars_rover_ids)
         .with_initial_point(x=0, y=0)
         .with_initial_direction(direction=Direction.NORTH)
-        .with_world(world_dimension=(4, 4), obstacles=[(2, 2)])
+        .with_world(world_dimension=world_dimension, obstacles=obstacles)
     )
 
-    ids = []
-    number_of_rovers = 2
+    commands = {}
     for i in range(number_of_rovers):
         runner.start()
-        ids.append(paths[i].get("id"))
+        id = mars_rover_ids[i]
 
-    commands = {}
-    for i in ids:
-        random_commands = generate_random_commands(3)
-        commands[i] = random_commands
-        runner.run(i, random_commands)
+        random_commands = generate_random_commands(commands_length)
+        commands[id] = random_commands
+
+        runner.run(id, commands[id])
 
     grouped_paths = group_by(paths)
     grouped_obstacles = group_by(obstacles)
 
-    for k, v in grouped_paths.items():
-        print(f"##### {k} #####")
-        first = repository.get_by_id(MarsRoverId(k))
-        print(f"Commands: {commands.get(k)}")
-        print(f"Actual Coordinate: {first.coordinate()}")
-        print(f"Paths: {v}")
-        print(f"Obstacles: {grouped_obstacles.get(k, [])}")
+    for id in mars_rover_ids:
+        print(f"##### {id} #####")
+        mars_rover = repository.get_by_id(MarsRoverId(id))
+        print(f"Commands: {commands.get(id)}")
+        print(f"Actual Coordinate: {mars_rover.coordinate()}")
+        print(f"Paths: {grouped_paths.get(id)}")
+        print(f"Obstacles: {grouped_obstacles.get(id, [])}")

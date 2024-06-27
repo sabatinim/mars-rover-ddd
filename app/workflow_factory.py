@@ -9,6 +9,7 @@ from app.command_handler.turn_off_command_handlers import TurnOffCommandHandler
 from app.command_handler.turn_right_command_handlers import TurnRightCommandHandler
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher, InMemoryCommandDispatcherBuilder
 from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted
+from app.domain.mars_rover_id import MarsRoverId
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
 from app.policy.policies import NotifyObstacleFoundPolicy, TurnOffPolicy
 from app.projection.mars_rover_ostacles_projection import MarsRoverObstaclesProjection
@@ -17,6 +18,7 @@ from app.projection.mars_rover_start_projection import MarsRoverStartProjection
 
 
 def create_command_dispatcher(mars_rover_repo: MarsRoverRepository,
+                              mars_rover_storage: List[MarsRoverId],
                               path_projection_storage: List[Dict],
                               obstacles_projection_storage: List[Dict]) -> InMemoryCommandDispatcher:
     turn_right_command_handler = TurnRightCommandHandler(repo=mars_rover_repo)
@@ -27,7 +29,9 @@ def create_command_dispatcher(mars_rover_repo: MarsRoverRepository,
     notify_obstacle_command_handler = NotifyObstacleCommandHandler()
 
     rover_path_projection = MarsRoverPathProjection(repo=mars_rover_repo, storage=path_projection_storage)
-    rover_start_projection = MarsRoverStartProjection(repo=mars_rover_repo, storage=path_projection_storage)
+    rover_start_projection = MarsRoverStartProjection(repo=mars_rover_repo,
+                                                      paths_storage=path_projection_storage,
+                                                      mars_rover_storage=mars_rover_storage)
     rover_obstacles_projection = MarsRoverObstaclesProjection(storage=obstacles_projection_storage)
 
     obstacle_found_policy = NotifyObstacleFoundPolicy()

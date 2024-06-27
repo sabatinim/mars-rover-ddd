@@ -12,11 +12,13 @@ class TestE2E(unittest.TestCase):
         repo = MarsRoverRepository()
         paths = []
         obstacles = []
+        mars_rover_ids = []
 
         runner = (
             MarsRoverRunner(repository=repo,
                             path_projection_storage=paths,
-                            obstacles_projection_storage=obstacles)
+                            obstacles_projection_storage=obstacles,
+                            mars_rover_projection_storage=mars_rover_ids)
             .with_initial_point(x=0, y=0)
             .with_initial_direction(direction=Direction.NORTH)
             .with_world(world_dimension=(4, 4),
@@ -42,11 +44,13 @@ class TestE2E(unittest.TestCase):
         repo = MarsRoverRepository()
         paths = []
         obstacles = []
+        mars_rover_ids = []
 
         runner = (
             MarsRoverRunner(repository=repo,
                             path_projection_storage=paths,
-                            obstacles_projection_storage=obstacles)
+                            obstacles_projection_storage=obstacles,
+                            mars_rover_projection_storage=mars_rover_ids)
             .with_initial_point(x=0, y=0)
             .with_initial_direction(direction=Direction.NORTH)
             .with_world(world_dimension=(4, 4),

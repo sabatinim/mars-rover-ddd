@@ -15,11 +15,13 @@ class MarsRoverRunner:
     def __init__(self,
                  repository: MarsRoverRepository,
                  path_projection_storage: List[Dict],
-                 obstacles_projection_storage: List[Dict]):
+                 obstacles_projection_storage: List[Dict],
+                 mars_rover_projection_storage: List[MarsRoverId]):
         self.command_dispatcher: InMemoryCommandDispatcher = (
             create_command_dispatcher(mars_rover_repo=repository,
                                       path_projection_storage=path_projection_storage,
-                                      obstacles_projection_storage=obstacles_projection_storage)
+                                      obstacles_projection_storage=obstacles_projection_storage,
+                                      mars_rover_storage=mars_rover_projection_storage)
         )
         self.command_map = {"R": TurnRight, "L": TurnLeft, "M": Move}
 
