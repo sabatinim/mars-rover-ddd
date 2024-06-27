@@ -1,14 +1,9 @@
-from typing import List, Dict
-
 from app.domain.direction import Direction
 from app.domain.mars_rover import MarsRover
 from app.domain.mars_rover_id import MarsRoverId
 from app.domain.obstacles import Obstacles
 from app.domain.point import Point
 from app.domain.world import World
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
-from app.service.mars_rover_runner import MarsRoverRunner
-from app.service.mars_rover_starter import MarsRoverStarter
 
 
 def create_mars_rover(actual_point: Point = None,
@@ -32,11 +27,3 @@ def create_mars_rover(actual_point: Point = None,
         world = World.create(dimension=(4, 4), obstacles=obstacles)
 
     return MarsRover.create(rover_id, actual_point, direction, world)
-
-
-def create_mars_rover_executor(repository: MarsRoverRepository, storage: List[Dict]) -> MarsRoverRunner:
-    return MarsRoverRunner(repository=repository, storage=storage)
-
-
-def create_mars_rover_starter(repository, storage) -> MarsRoverStarter:
-    return MarsRoverStarter(repository=repository, storage=storage)

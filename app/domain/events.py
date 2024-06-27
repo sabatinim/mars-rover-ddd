@@ -1,4 +1,5 @@
 import dataclasses
+from typing import Tuple
 
 from app.ddd.basics import Event
 from app.domain.mars_rover_id import MarsRoverId
@@ -25,10 +26,11 @@ class MarsRoverMoved(Event):
 @dataclasses.dataclass
 class ObstacleFound(Event):
     id: MarsRoverId
+    coordinate: Tuple[int, int]
 
     @staticmethod
-    def create(id: MarsRoverId) -> 'ObstacleFound':
-        return ObstacleFound(id=id)
+    def create(id: MarsRoverId, coordinate: Tuple[int, int]) -> 'ObstacleFound':
+        return ObstacleFound(id=id, coordinate=coordinate)
 
 
 @dataclasses.dataclass

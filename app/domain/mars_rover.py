@@ -29,7 +29,7 @@ class MarsRover(Aggregate):
         return MarsRoverStarted.create(self.id)
 
     def turn_right(self) -> MarsRoverMoved | None:
-        if self._is_turned_off_for_an_obstacle():
+        if self._is_stopped():
             return None
 
         match self.direction:
@@ -41,11 +41,12 @@ class MarsRover(Aggregate):
                 self.direction = Direction.NORTH
             case Direction.EAST:
                 self.direction = Direction.SOUTH
+            
         self.status = MarsRoverStatus.MOVING
         return MarsRoverMoved.create(id=self.id)
 
     def turn_left(self) -> MarsRoverMoved | None:
-        if self._is_turned_off_for_an_obstacle():
+        if self._is_stopped():
             return None
 
         match self.direction:
@@ -62,7 +63,7 @@ class MarsRover(Aggregate):
         return MarsRoverMoved.create(id=self.id)
 
     def move(self) -> MarsRoverMoved | ObstacleFound | None:
-        if self._is_turned_off_for_an_obstacle():
+        if self._is_stopped():
             return None
 
         match self.direction:
@@ -84,23 +85,24 @@ class MarsRover(Aggregate):
 
         if self.world.hit_obstacles(next_point):
             self.status = MarsRoverStatus.OBSTACLE_FOUND
-            return ObstacleFound.create(self.id)
-
-        self.actual_point = next_point
-        self.status = MarsRoverStatus.MOVING
-        return MarsRoverMoved.create(id=self.id)
+            return ObstacleFound.create(id=self.id, coordinate=(next_point.x, next_point.y))
+        else:
+            self.actual_point = next_point
+            self.status = MarsRoverStatus.MOVING
+            return MarsRoverMoved.create(id=self.id)
 
     def turn_off(self) -> MarsRoverTurnedOff:
         self.status = MarsRoverStatus.TURNED_OFF_FOR_AN_OBSTACLE
         return MarsRoverTurnedOff.create(self.id)
 
     def coordinate(self):
-        hit_obstacles = "O:" if self._is_turned_off_for_an_obstacle() else ""
+        hit_obstacles = "O:" if self._is_stopped() else ""
 
         return f"{hit_obstacles}{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"
 
-    def _is_turned_off_for_an_obstacle(self):
-        return self.status == MarsRoverStatus.TURNED_OFF_FOR_AN_OBSTACLE or self.status == MarsRoverStatus.OBSTACLE_FOUND
+    def _is_stopped(self):
+        return (self.status == MarsRoverStatus.TURNED_OFF_FOR_AN_OBSTACLE or
+                self.status == MarsRoverStatus.OBSTACLE_FOUND)
 
     @staticmethod
     def create(id: MarsRoverId, actual_point: Point, direction: Direction, world: World):
