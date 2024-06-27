@@ -44,7 +44,7 @@ class TestE2E(unittest.TestCase):
 
         actual: MarsRover = repo.get_by_id(MarsRoverId(id))
         self.assertEqual("O:2:1:N", actual.coordinate())
-        self.assertEqual("OBSTACLE_HIT", actual.status.value)
+        self.assertEqual("TURNED_OFF", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "2:0:E", "2:0:N", "2:1:N"]
         actual_path = [p["actual_point"] for p in projections_storage]

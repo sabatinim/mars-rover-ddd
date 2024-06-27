@@ -32,5 +32,14 @@ class ObstacleFound(Event):
 
 
 @dataclasses.dataclass
+class MarsRoverTurnedOff(Event):
+    id: MarsRoverId
+
+    @staticmethod
+    def create(id: MarsRoverId) -> 'MarsRoverTurnedOff':
+        return MarsRoverTurnedOff(id=id)
+
+
+@dataclasses.dataclass
 class ObstacleNotified(Event):
     pass
