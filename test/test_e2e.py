@@ -4,7 +4,7 @@ from app.domain.mars_rover import MarsRover
 from app.domain.mars_rover_id import MarsRoverId
 from app.factory import create_mars_rover_executor, create_mars_rover_starter
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
-from app.service.mars_rover_executor import MarsRoverRunner
+from app.service.mars_rover_runner import MarsRoverRunner
 from app.service.mars_rover_starter import MarsRoverStarter
 
 

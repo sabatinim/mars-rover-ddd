@@ -7,7 +7,7 @@ from app.domain.obstacles import Obstacles
 from app.domain.point import Point
 from app.domain.world import World
 from app.infrastructure.mars_rover_repository import MarsRoverRepository
-from app.service.mars_rover_executor import MarsRoverRunner
+from app.service.mars_rover_runner import MarsRoverRunner
 from app.service.mars_rover_starter import MarsRoverStarter
 
 
