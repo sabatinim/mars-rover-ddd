@@ -63,5 +63,3 @@ if __name__ == "__main__":
         print(f"Actual Coordinate: {mars_rover.coordinate()}")
         print(f"Paths: {grouped_paths.get(id)}, length: {len(grouped_paths.get(id))}")
         print(f"Obstacles: {grouped_obstacles.get(id, [])}")
-
-LMLRLRRMRRRRMRLRMLMLRLLLRRRRMRRLMLLRRLLRLLMRMMMLRMLMMLLLRMLLLMMRRLMMMRMLRRLRLLLLLMMLLLMRMLLRMRMRRLRR
