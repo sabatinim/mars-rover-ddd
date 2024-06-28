@@ -22,11 +22,15 @@ class MarsRover(Aggregate):
     actual_point: Point
     direction: Direction
     world: World
-    status: MarsRoverStatus | None
+    status: MarsRoverStatus
 
     def start(self) -> MarsRoverStarted:
         self.status = MarsRoverStatus.STARTED
         return MarsRoverStarted.create(self.id)
+
+    def turn_off(self) -> MarsRoverTurnedOff:
+        self.status = MarsRoverStatus.TURNED_OFF_FOR_AN_OBSTACLE
+        return MarsRoverTurnedOff.create(self.id)
 
     def turn_right(self) -> MarsRoverMoved | None:
         if self._is_stopped():
@@ -41,7 +45,7 @@ class MarsRover(Aggregate):
                 self.direction = Direction.NORTH
             case Direction.EAST:
                 self.direction = Direction.SOUTH
-            
+
         self.status = MarsRoverStatus.MOVING
         return MarsRoverMoved.create(id=self.id)
 
@@ -90,10 +94,6 @@ class MarsRover(Aggregate):
             self.actual_point = next_point
             self.status = MarsRoverStatus.MOVING
             return MarsRoverMoved.create(id=self.id)
-
-    def turn_off(self) -> MarsRoverTurnedOff:
-        self.status = MarsRoverStatus.TURNED_OFF_FOR_AN_OBSTACLE
-        return MarsRoverTurnedOff.create(self.id)
 
     def coordinate(self):
         hit_obstacles = "O:" if self._is_stopped() else ""
