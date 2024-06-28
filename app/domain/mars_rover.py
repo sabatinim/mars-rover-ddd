@@ -14,7 +14,7 @@ class MarsRoverStatus(enum.Enum):
     STARTED = "STARTED"
     MOVING = "MOVING"
     OBSTACLE_FOUND = "OBSTACLE_FOUND"
-    TURNED_OFF_FOR_AN_OBSTACLE = "TURNED_OFF"
+    TURNED_OFF = "TURNED_OFF"
 
 
 @dataclasses.dataclass
@@ -29,7 +29,7 @@ class MarsRover(Aggregate):
         return MarsRoverStarted.create(self.id)
 
     def turn_off(self) -> MarsRoverTurnedOff:
-        self.status = MarsRoverStatus.TURNED_OFF_FOR_AN_OBSTACLE
+        self.status = MarsRoverStatus.TURNED_OFF
         return MarsRoverTurnedOff.create(self.id)
 
     def turn_right(self) -> MarsRoverMoved | None:
@@ -101,7 +101,7 @@ class MarsRover(Aggregate):
         return f"{hit_obstacles}{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"
 
     def _is_stopped(self):
-        return (self.status == MarsRoverStatus.TURNED_OFF_FOR_AN_OBSTACLE or
+        return (self.status == MarsRoverStatus.TURNED_OFF or
                 self.status == MarsRoverStatus.OBSTACLE_FOUND)
 
     @staticmethod
