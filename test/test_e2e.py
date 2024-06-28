@@ -35,9 +35,8 @@ class TestE2E(unittest.TestCase):
         self.assertEqual("MOVING", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "1:0:N", "1:1:N", "1:2:N"]
-        actual_path = [p["actual_point"] for p in paths]
+        self._assert_paths(expected=expected_path, actual=paths)
 
-        self.assertEqual(expected_path, actual_path)
         self.assertListEqual([], obstacles)
 
     def test_hit_obstacle(self):
@@ -68,9 +67,11 @@ class TestE2E(unittest.TestCase):
         self.assertEqual("TURNED_OFF", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "2:0:E", "2:0:N", "2:1:N"]
-        actual_path = [p["actual_point"] for p in paths]
-
-        self.assertEqual(expected_path, actual_path)
+        self._assert_paths(expected=expected_path, actual=paths)
 
         obstacles_found = [o["obstacle"] for o in obstacles]
         self.assertEqual([(2, 2)], obstacles_found)
+
+    def _assert_paths(self, expected, actual):
+        actual_path = [p["actual_point"] for p in actual]
+        self.assertEqual(expected, actual_path)
