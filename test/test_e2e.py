@@ -26,7 +26,7 @@ class TestE2E(unittest.TestCase):
         )
         runner.start()
 
-        id = next(iter(paths)).get("id")
+        id = mars_rover_ids[0]
 
         runner.run(id, "RMLMM")
 
@@ -58,7 +58,7 @@ class TestE2E(unittest.TestCase):
 
         runner.start()
 
-        id = next(iter(paths)).get("id")
+        id = mars_rover_ids[0]
 
         runner.run(id, "RMMLMMMMMM")
 
