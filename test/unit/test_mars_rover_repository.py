@@ -4,13 +4,13 @@ from _pytest.outcomes import fail
 
 from app.ddd.generic_aggregate_repository import ConcurrencyException
 from app.factory import create_mars_rover
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 
 
 class TestMarsRoverRepository(unittest.TestCase):
     def test_save_mars_rover_aggregate(self):
         mars_rover = create_mars_rover()
-        repository = MarsRoverRepository()
+        repository = InMemoryMarsRoverRepository()
         repository.save(mars_rover)
 
         actual = repository.get_by_id(mars_rover.id)
@@ -18,7 +18,7 @@ class TestMarsRoverRepository(unittest.TestCase):
         self.assertIsNotNone(actual)
 
     def test_save_same_version(self):
-        repository = MarsRoverRepository()
+        repository = InMemoryMarsRoverRepository()
 
         mars_rover = create_mars_rover()
         repository.save(mars_rover)

@@ -2,5 +2,5 @@ from app.ddd.generic_aggregate_repository import InMemoryGenericAggregateReposit
 from app.domain.mars_rover import MarsRover
 
 
-class MarsRoverRepository(InMemoryGenericAggregateRepository[MarsRover]):
+class InMemoryMarsRoverRepository(InMemoryGenericAggregateRepository[MarsRover]):
     pass

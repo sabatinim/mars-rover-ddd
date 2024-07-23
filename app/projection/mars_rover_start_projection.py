@@ -4,12 +4,12 @@ from app.ddd.basics import Projection
 from app.domain.events import MarsRoverStarted
 from app.domain.mars_rover import MarsRover
 from app.domain.mars_rover_id import MarsRoverId
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 
 
 class MarsRoverStartProjection(Projection):
     def __init__(self,
-                 repo: MarsRoverRepository,
+                 repo: InMemoryMarsRoverRepository,
                  paths_storage: List[Dict],
                  mars_rover_storage: List[MarsRoverId]):
         self.repo = repo

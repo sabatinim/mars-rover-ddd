@@ -10,14 +10,14 @@ from app.command_handler.turn_right_command_handlers import TurnRightCommandHand
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher, InMemoryCommandDispatcherBuilder
 from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted
 from app.domain.mars_rover_id import MarsRoverId
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 from app.policy.policies import NotifyObstacleFoundPolicy, TurnOffPolicy
 from app.projection.mars_rover_ostacles_projection import MarsRoverObstaclesProjection
 from app.projection.mars_rover_path_projection import MarsRoverPathProjection
 from app.projection.mars_rover_start_projection import MarsRoverStartProjection
 
 
-def create_command_dispatcher(mars_rover_repo: MarsRoverRepository,
+def create_command_dispatcher(mars_rover_repo: InMemoryMarsRoverRepository,
                               mars_rover_start_view: List[MarsRoverId],
                               mars_rover_path_view: List[Dict],
                               obstacle_view: List[Dict]) -> InMemoryCommandDispatcher:

@@ -7,13 +7,13 @@ from app.domain.mars_rover_id import MarsRoverId
 from app.domain.obstacles import Obstacles
 from app.domain.point import Point
 from app.domain.world import World
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 from app.workflow_factory import create_command_dispatcher
 
 
 class MarsRoverRunner:
     def __init__(self,
-                 repository: MarsRoverRepository,
+                 repository: InMemoryMarsRoverRepository,
                  mars_rover_path_view: List[Dict],
                  obstacle_view: List[Dict],
                  mars_rover_start_view: List[MarsRoverId]):

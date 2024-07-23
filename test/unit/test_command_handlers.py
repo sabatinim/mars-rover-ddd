@@ -13,12 +13,12 @@ from app.domain.obstacles import Obstacles
 from app.domain.point import Point
 from app.domain.world import World
 from app.factory import create_mars_rover
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 
 
 class TestMarsCommandHandler(unittest.TestCase):
     def test_start_command_handler(self):
-        repo = MarsRoverRepository()
+        repo = InMemoryMarsRoverRepository()
         start_rover: StartMarsRover = _start_rover_command()
 
         event = StartMarsRoverCommandHandler(repo=repo).handle(command=start_rover)
@@ -61,7 +61,7 @@ class TestMarsCommandHandler(unittest.TestCase):
         self._assert_aggregate(event, repo)
 
     def _setup(self):
-        repo = MarsRoverRepository()
+        repo = InMemoryMarsRoverRepository()
         mars_rover: MarsRover = create_mars_rover()
         repo.save(mars_rover)
         return repo, mars_rover.id

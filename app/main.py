@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from app.domain.direction import Direction
 from app.domain.mars_rover_id import MarsRoverId
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 from app.service.mars_rover_runner import MarsRoverRunner
 
 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     world_dimension = (10, 10)
     world_obstacles = [(1, 2), (1, 1), (4, 6), (5, 9), (5, 5)]
 
-    repository = MarsRoverRepository()
+    repository = InMemoryMarsRoverRepository()
     paths_table = []
     obstacles_table = []
     mars_rover_ids_table = []

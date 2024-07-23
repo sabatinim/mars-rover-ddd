@@ -3,11 +3,11 @@ from app.command_handler.commands import StartMarsRover
 from app.domain.events import MarsRoverStarted
 from app.domain.mars_rover import MarsRover
 from app.domain.mars_rover_id import MarsRoverId
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 
 
 class StartMarsRoverCommandHandler(CommandHandler):
-    def __init__(self, repo: MarsRoverRepository):
+    def __init__(self, repo: InMemoryMarsRoverRepository):
         self.repo = repo
 
     def handle(self, command: StartMarsRover) -> MarsRoverStarted:

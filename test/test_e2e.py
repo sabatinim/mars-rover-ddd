@@ -3,13 +3,13 @@ import unittest
 from app.domain.direction import Direction
 from app.domain.mars_rover import MarsRover
 from app.domain.mars_rover_id import MarsRoverId
-from app.infrastructure.mars_rover_repository import MarsRoverRepository
+from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 from app.service.mars_rover_runner import MarsRoverRunner
 
 
 class TestE2E(unittest.TestCase):
     def test_execute_some_commands(self):
-        repo = MarsRoverRepository()
+        repo = InMemoryMarsRoverRepository()
         mars_rover_start_view = []
         mars_rover_path_view = []
         obstacle_view = []
@@ -40,7 +40,7 @@ class TestE2E(unittest.TestCase):
         self.assertListEqual([], obstacle_view)
 
     def test_hit_obstacle(self):
-        repo = MarsRoverRepository()
+        repo = InMemoryMarsRoverRepository()
         mars_rover_start_view = []
         mars_rover_path_view = []
         obstacle_view = []
