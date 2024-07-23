@@ -31,10 +31,10 @@ class CommandHandler:
 
 
 class Policy:
-    def apply(self, event) -> Command:
+    def apply(self, event: Event) -> Command:
         pass
 
 
 class Projection:
-    def project(self, event):
+    def project(self, event: Event):
         pass
