@@ -11,7 +11,7 @@ from app.ddd.command_dispatcher import InMemoryCommandDispatcher, InMemoryComman
 from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted
 from app.domain.mars_rover_id import MarsRoverId
 from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
-from app.policy.policies import NotifyObstacleFoundPolicy, TurnOffPolicy
+from app.policy.policies import NotifyObstacleFoundPolicy, TurnOffObstacleFoundPolicy
 from app.projection.mars_rover_ostacles_projection import MarsRoverObstaclesProjection
 from app.projection.mars_rover_path_projection import MarsRoverPathProjection
 from app.projection.mars_rover_start_projection import MarsRoverStartProjection
@@ -21,32 +21,33 @@ def create_command_dispatcher(mars_rover_repo: InMemoryMarsRoverRepository,
                               mars_rover_start_view: List[MarsRoverId],
                               mars_rover_path_view: List[Dict],
                               obstacle_view: List[Dict]) -> InMemoryCommandDispatcher:
-    turn_right_command_handler = TurnRightCommandHandler(repo=mars_rover_repo)
-    turn_left_command_handler = TurnLeftCommandHandler(repo=mars_rover_repo)
-    move_command_handler = MoveCommandHandler(repo=mars_rover_repo)
-    start_command_handler = StartMarsRoverCommandHandler(repo=mars_rover_repo)
-    turn_off_command_handler = TurnOffCommandHandler(repo=mars_rover_repo)
-    notify_obstacle_command_handler = NotifyObstacleCommandHandler()
+    start = StartMarsRoverCommandHandler(repo=mars_rover_repo)
+    turn_right = TurnRightCommandHandler(repo=mars_rover_repo)
+    turn_left = TurnLeftCommandHandler(repo=mars_rover_repo)
+    move = MoveCommandHandler(repo=mars_rover_repo)
+    turn_off = TurnOffCommandHandler(repo=mars_rover_repo)
+    notify_obstacle = NotifyObstacleCommandHandler()
 
-    rover_start_projection = MarsRoverStartProjection(repo=mars_rover_repo,
-                                                      paths_storage=mars_rover_path_view,
-                                                      mars_rover_storage=mars_rover_start_view)
-    rover_path_projection = MarsRoverPathProjection(repo=mars_rover_repo, storage=mars_rover_path_view)
-    rover_obstacles_projection = MarsRoverObstaclesProjection(storage=obstacle_view)
+    turn_off_policy = TurnOffObstacleFoundPolicy()
+    notify_obstacle_policy = NotifyObstacleFoundPolicy()
 
-    obstacle_found_policy = NotifyObstacleFoundPolicy()
-    turn_off_policy = TurnOffPolicy()
+    start_projection = MarsRoverStartProjection(repo=mars_rover_repo,
+                                                mars_rover_path_view=mars_rover_path_view,
+                                                mars_rover_start_view=mars_rover_start_view)
+    path_projection = MarsRoverPathProjection(repo=mars_rover_repo,
+                                              mars_rover_path_view=mars_rover_path_view)
+    obstacles_projection = MarsRoverObstaclesProjection(obstacle_view=obstacle_view)
 
     return (InMemoryCommandDispatcherBuilder()
-            .with_command_handler(TurnRight, turn_right_command_handler)
-            .with_command_handler(TurnLeft, turn_left_command_handler)
-            .with_command_handler(Move, move_command_handler)
-            .with_command_handler(StartMarsRover, start_command_handler)
-            .with_command_handler(TurnOff, turn_off_command_handler)
-            .with_command_handler(NotifyObstacle, notify_obstacle_command_handler)
-            .with_projection(MarsRoverStarted, rover_start_projection)
-            .with_projection(MarsRoverMoved, rover_path_projection)
-            .with_projection(ObstacleFound, rover_obstacles_projection)
-            .with_policy(ObstacleFound, obstacle_found_policy)
+            .with_command_handler(StartMarsRover, start)
+            .with_command_handler(TurnRight, turn_right)
+            .with_command_handler(TurnLeft, turn_left)
+            .with_command_handler(Move, move)
+            .with_command_handler(TurnOff, turn_off)
+            .with_command_handler(NotifyObstacle, notify_obstacle)
+            .with_policy(ObstacleFound, notify_obstacle_policy)
             .with_policy(ObstacleFound, turn_off_policy)
+            .with_projection(MarsRoverStarted, start_projection)
+            .with_projection(MarsRoverMoved, path_projection)
+            .with_projection(ObstacleFound, obstacles_projection)
             .build())

@@ -7,9 +7,9 @@ from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 
 
 class MarsRoverPathProjection(Projection):
-    def __init__(self, repo: InMemoryMarsRoverRepository, storage: List[Dict]):
+    def __init__(self, repo: InMemoryMarsRoverRepository, mars_rover_path_view: List[Dict]):
         self.repo = repo
-        self.storage = storage
+        self.storage = mars_rover_path_view
 
     def project(self, event: MarsRoverMoved):
         mars_rover: MarsRover = self.repo.get_by_id(event.id)

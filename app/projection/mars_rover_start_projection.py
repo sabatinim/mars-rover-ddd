@@ -10,11 +10,11 @@ from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 class MarsRoverStartProjection(Projection):
     def __init__(self,
                  repo: InMemoryMarsRoverRepository,
-                 paths_storage: List[Dict],
-                 mars_rover_storage: List[MarsRoverId]):
+                 mars_rover_path_view: List[Dict],
+                 mars_rover_start_view: List[MarsRoverId]):
         self.repo = repo
-        self.paths_storage = paths_storage
-        self.mars_rover_storage = mars_rover_storage
+        self.paths_storage = mars_rover_path_view
+        self.mars_rover_storage = mars_rover_start_view
 
     def project(self, event: MarsRoverStarted):
         mars_rover: MarsRover = self.repo.get_by_id(event.id)
