@@ -7,7 +7,8 @@ from app.command_handler.start_mars_rover_command_handlers import StartMarsRover
 from app.command_handler.turn_left_command_handlers import TurnLeftCommandHandler
 from app.command_handler.turn_off_command_handlers import TurnOffCommandHandler
 from app.command_handler.turn_right_command_handlers import TurnRightCommandHandler
-from app.ddd.command_dispatcher import InMemoryCommandDispatcher, InMemoryCommandDispatcherBuilder
+from app.ddd.command_dispatcher import InMemoryCommandDispatcher
+from app.ddd.command_dispatcher_builder import InMemoryCommandDispatcherBuilder
 from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted
 from app.domain.mars_rover_id import MarsRoverId
 from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
