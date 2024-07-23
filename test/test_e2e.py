@@ -10,15 +10,15 @@ from app.service.mars_rover_runner import MarsRoverRunner
 class TestE2E(unittest.TestCase):
     def test_execute_some_commands(self):
         repo = MarsRoverRepository()
-        paths = []
-        obstacles = []
-        mars_rover_ids = []
+        mars_rover_start_view = []
+        mars_rover_path_view = []
+        obstacle_view = []
 
         runner = (
             MarsRoverRunner(repository=repo,
-                            path_projection_storage=paths,
-                            obstacles_projection_storage=obstacles,
-                            mars_rover_projection_storage=mars_rover_ids)
+                            mars_rover_start_view=mars_rover_start_view,
+                            mars_rover_path_view=mars_rover_path_view,
+                            obstacle_view=obstacle_view)
             .with_initial_point(x=0, y=0)
             .with_initial_direction(direction=Direction.NORTH)
             .with_world(world_dimension=(4, 4),
@@ -26,7 +26,7 @@ class TestE2E(unittest.TestCase):
         )
         runner.start()
 
-        id = mars_rover_ids[0]
+        id = mars_rover_start_view[0]
 
         runner.run(id, "RMLMM")
 
@@ -35,21 +35,21 @@ class TestE2E(unittest.TestCase):
         self.assertEqual("MOVING", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "1:0:N", "1:1:N", "1:2:N"]
-        self._assert_paths(expected=expected_path, actual=paths)
+        self._assert_paths(expected=expected_path, actual=mars_rover_path_view)
 
-        self.assertListEqual([], obstacles)
+        self.assertListEqual([], obstacle_view)
 
     def test_hit_obstacle(self):
         repo = MarsRoverRepository()
-        paths = []
-        obstacles = []
-        mars_rover_ids = []
+        mars_rover_start_view = []
+        mars_rover_path_view = []
+        obstacle_view = []
 
         runner = (
             MarsRoverRunner(repository=repo,
-                            path_projection_storage=paths,
-                            obstacles_projection_storage=obstacles,
-                            mars_rover_projection_storage=mars_rover_ids)
+                            mars_rover_start_view=mars_rover_start_view,
+                            mars_rover_path_view=mars_rover_path_view,
+                            obstacle_view=obstacle_view)
             .with_initial_point(x=0, y=0)
             .with_initial_direction(direction=Direction.NORTH)
             .with_world(world_dimension=(4, 4),
@@ -58,7 +58,7 @@ class TestE2E(unittest.TestCase):
 
         runner.start()
 
-        id = mars_rover_ids[0]
+        id = mars_rover_start_view[0]
 
         runner.run(id, "RMMLMMMMMM")
 
@@ -67,9 +67,9 @@ class TestE2E(unittest.TestCase):
         self.assertEqual("TURNED_OFF", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "2:0:E", "2:0:N", "2:1:N"]
-        self._assert_paths(expected=expected_path, actual=paths)
+        self._assert_paths(expected=expected_path, actual=mars_rover_path_view)
 
-        obstacles_found = [o["obstacle"] for o in obstacles]
+        obstacles_found = [o["obstacle"] for o in obstacle_view]
         self.assertEqual([(2, 2)], obstacles_found)
 
     def _assert_paths(self, expected, actual):

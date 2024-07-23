@@ -18,9 +18,9 @@ from app.projection.mars_rover_start_projection import MarsRoverStartProjection
 
 
 def create_command_dispatcher(mars_rover_repo: MarsRoverRepository,
-                              mars_rover_storage: List[MarsRoverId],
-                              path_projection_storage: List[Dict],
-                              obstacles_projection_storage: List[Dict]) -> InMemoryCommandDispatcher:
+                              mars_rover_start_view: List[MarsRoverId],
+                              mars_rover_path_view: List[Dict],
+                              obstacle_view: List[Dict]) -> InMemoryCommandDispatcher:
     turn_right_command_handler = TurnRightCommandHandler(repo=mars_rover_repo)
     turn_left_command_handler = TurnLeftCommandHandler(repo=mars_rover_repo)
     move_command_handler = MoveCommandHandler(repo=mars_rover_repo)
@@ -28,11 +28,11 @@ def create_command_dispatcher(mars_rover_repo: MarsRoverRepository,
     turn_off_command_handler = TurnOffCommandHandler(repo=mars_rover_repo)
     notify_obstacle_command_handler = NotifyObstacleCommandHandler()
 
-    rover_path_projection = MarsRoverPathProjection(repo=mars_rover_repo, storage=path_projection_storage)
     rover_start_projection = MarsRoverStartProjection(repo=mars_rover_repo,
-                                                      paths_storage=path_projection_storage,
-                                                      mars_rover_storage=mars_rover_storage)
-    rover_obstacles_projection = MarsRoverObstaclesProjection(storage=obstacles_projection_storage)
+                                                      paths_storage=mars_rover_path_view,
+                                                      mars_rover_storage=mars_rover_start_view)
+    rover_path_projection = MarsRoverPathProjection(repo=mars_rover_repo, storage=mars_rover_path_view)
+    rover_obstacles_projection = MarsRoverObstaclesProjection(storage=obstacle_view)
 
     obstacle_found_policy = NotifyObstacleFoundPolicy()
     turn_off_policy = TurnOffPolicy()

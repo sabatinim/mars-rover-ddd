@@ -14,14 +14,14 @@ from app.workflow_factory import create_command_dispatcher
 class MarsRoverRunner:
     def __init__(self,
                  repository: MarsRoverRepository,
-                 path_projection_storage: List[Dict],
-                 obstacles_projection_storage: List[Dict],
-                 mars_rover_projection_storage: List[MarsRoverId]):
+                 mars_rover_path_view: List[Dict],
+                 obstacle_view: List[Dict],
+                 mars_rover_start_view: List[MarsRoverId]):
         self.command_dispatcher: InMemoryCommandDispatcher = (
             create_command_dispatcher(mars_rover_repo=repository,
-                                      path_projection_storage=path_projection_storage,
-                                      obstacles_projection_storage=obstacles_projection_storage,
-                                      mars_rover_storage=mars_rover_projection_storage)
+                                      mars_rover_path_view=mars_rover_path_view,
+                                      obstacle_view=obstacle_view,
+                                      mars_rover_start_view=mars_rover_start_view)
         )
         self.command_map = {"R": TurnRight, "L": TurnLeft, "M": Move}
 

@@ -35,9 +35,9 @@ if __name__ == "__main__":
 
     runner = (
         MarsRoverRunner(repository=repository,
-                        path_projection_storage=paths_table,
-                        obstacles_projection_storage=obstacles_table,
-                        mars_rover_projection_storage=mars_rover_ids_table)
+                        mars_rover_path_view=paths_table,
+                        obstacle_view=obstacles_table,
+                        mars_rover_start_view=mars_rover_ids_table)
         .with_initial_point(x=0, y=0)
         .with_initial_direction(direction=Direction.NORTH)
         .with_world(world_dimension=world_dimension, obstacles=world_obstacles)
