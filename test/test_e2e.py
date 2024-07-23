@@ -24,11 +24,11 @@ class TestE2E(unittest.TestCase):
             .with_world(world_dimension=(4, 4),
                         obstacles=[])
         )
-        runner.start()
+        runner.start_rover()
 
         id = mars_rover_start_view[0]
 
-        runner.run(id, "RMLMM")
+        runner.execute(rover_id=id, commands="RMLMM")
 
         actual: MarsRover = repo.get_by_id(MarsRoverId(id))
         self.assertEqual("1:2:N", actual.coordinate())
@@ -56,11 +56,11 @@ class TestE2E(unittest.TestCase):
                         obstacles=[(2, 2)])
         )
 
-        runner.start()
+        runner.start_rover()
 
         id = mars_rover_start_view[0]
 
-        runner.run(id, "RMMLMMMMMM")
+        runner.execute(rover_id=id, commands="RMMLMMMMMM")
 
         actual: MarsRover = repo.get_by_id(MarsRoverId(id))
         self.assertEqual("O:2:1:N", actual.coordinate())

@@ -38,14 +38,14 @@ class MarsRoverRunner:
         self.world = World.create(dimension=world_dimension, obstacles=world_obstacles)
         return self
 
-    def start(self):
+    def start_rover(self):
         start = StartMarsRover(initial_point=self.initial_point,
                                initial_direction=self.initial_direction,
                                world=self.world)
         self.command_dispatcher.submit([start])
         self.command_dispatcher.run()
 
-    def run(self, rover_id: str, commands: str):
+    def execute(self, rover_id: str, commands: str):
         parsed_commands = [self.command_map[c](MarsRoverId(rover_id)) for c in commands]
 
         self.command_dispatcher.submit(commands=parsed_commands)

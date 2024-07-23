@@ -45,13 +45,13 @@ if __name__ == "__main__":
 
     commands = {}
     for i in range(number_of_rovers):
-        runner.start()
+        runner.start_rover()
         id = mars_rover_ids_table[i]
 
         random_commands = generate_random_commands(commands_length)
         commands[id] = random_commands
 
-        runner.run(id, commands[id])
+        runner.execute(id, commands[id])
 
     grouped_paths = group_by(paths_table)
     grouped_obstacles = group_by(obstacles_table)
