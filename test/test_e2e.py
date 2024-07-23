@@ -8,6 +8,11 @@ from app.service.mars_rover_runner import MarsRoverRunner
 
 
 class TestE2E(unittest.TestCase):
+    # x x x x
+    # x x x x
+    # x x x x
+    # x x x x
+    #
     def test_execute_some_commands(self):
         repo = InMemoryMarsRoverRepository()
         mars_rover_start_view = []
@@ -39,6 +44,11 @@ class TestE2E(unittest.TestCase):
 
         self.assertListEqual([], obstacle_view)
 
+    # x x x x
+    # x x o x
+    # x x x x
+    # x x x x
+    #
     def test_hit_obstacle(self):
         repo = InMemoryMarsRoverRepository()
         mars_rover_start_view = []
@@ -69,8 +79,12 @@ class TestE2E(unittest.TestCase):
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "2:0:E", "2:0:N", "2:1:N"]
         self._assert_paths(expected=expected_path, actual=mars_rover_path_view)
 
-        obstacles_found = [o["obstacle"] for o in obstacle_view]
-        self.assertEqual([(2, 2)], obstacles_found)
+        expected_obstacles = [(2, 2)]
+        self._assert_obstacles(expected=expected_obstacles, actual=obstacle_view)
+
+    def _assert_obstacles(self, expected, actual):
+        obstacles_found = [o["obstacle"] for o in actual]
+        self.assertEqual(expected, obstacles_found)
 
     def _assert_paths(self, expected, actual):
         actual_path = [p["actual_point"] for p in actual]
