@@ -10,7 +10,7 @@ from app.domain.world import World
 
 
 class MarsRoverStatus(enum.Enum):
-    INITIALIZED = "INITIALIZED"
+    CREATED = "CREATED"
     STARTED = "STARTED"
     MOVED = "MOVED"
     OBSTACLE_HIT = "OBSTACLE_HIT"
@@ -96,4 +96,4 @@ class MarsRover(Aggregate):
                          actual_point=actual_point,
                          world=world,
                          direction=direction,
-                         status=MarsRoverStatus.INITIALIZED)
+                         status=MarsRoverStatus.CREATED)
