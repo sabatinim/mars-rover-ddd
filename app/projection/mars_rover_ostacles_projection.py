@@ -1,14 +1,12 @@
-from typing import List, Dict
+from typing import Set, Tuple
 
 from app.ddd.basics import Projection
-from app.domain.events import ObstacleFound
+from app.domain.events import ObstacleHit
 
 
 class MarsRoverObstaclesProjection(Projection):
-    def __init__(self, obstacle_view: List[Dict]):
+    def __init__(self, obstacle_view: Set[Tuple[int, int]]):
         self.storage = obstacle_view
 
-    def project(self, event: ObstacleFound):
-        raw = {"id": event.id.value, "obstacle": event.coordinate}
-
-        self.storage.append(raw)
+    def project(self, event: ObstacleHit):
+        self.storage.add(event.coordinate)

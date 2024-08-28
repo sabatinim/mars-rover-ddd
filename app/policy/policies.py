@@ -1,13 +1,8 @@
-from app.command_handler.commands import NotifyObstacle, TurnOff
+from app.command_handler.commands import NotifyObstacleHit
 from app.ddd.basics import Policy, Command
-from app.domain.events import ObstacleFound
+from app.domain.events import ObstacleHit
 
 
-class TurnOffObstacleFoundPolicy(Policy):
-    def apply(self, event: ObstacleFound) -> Command:
-        return TurnOff(id=event.id)
-
-
-class NotifyObstacleFoundPolicy(Policy):
-    def apply(self, event: ObstacleFound) -> Command:
-        return NotifyObstacle(message=f"Rover {event.id.value} hit obstacle")
+class NotifyObstacleHitPolicy(Policy):
+    def apply(self, event: ObstacleHit) -> Command:
+        return NotifyObstacleHit(message=f"Rover {event.id.value} hit obstacle")

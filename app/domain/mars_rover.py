@@ -3,7 +3,7 @@ import enum
 
 from app.ddd.basics import Aggregate
 from app.domain.direction import Direction
-from app.domain.events import MarsRoverMoved, ObstacleFound, MarsRoverStarted, MarsRoverTurnedOff
+from app.domain.events import MarsRoverMoved, ObstacleHit, MarsRoverStarted
 from app.domain.mars_rover_id import MarsRoverId
 from app.domain.point import Point
 from app.domain.world import World
@@ -13,8 +13,7 @@ class MarsRoverStatus(enum.Enum):
     INITIALIZED = "INITIALIZED"
     STARTED = "STARTED"
     MOVED = "MOVED"
-    OBSTACLE_FOUND = "OBSTACLE_FOUND"
-    TURNED_OFF = "TURNED_OFF"
+    OBSTACLE_HIT = "OBSTACLE_HIT"
 
 
 @dataclasses.dataclass
@@ -28,14 +27,7 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.STARTED
         return MarsRoverStarted.create(self.id)
 
-    def turn_off(self) -> MarsRoverTurnedOff:
-        self.status = MarsRoverStatus.TURNED_OFF
-        return MarsRoverTurnedOff.create(self.id)
-
-    def turn_right(self) -> MarsRoverMoved | None:
-        if self._is_stopped():
-            return None
-
+    def turn_right(self) -> MarsRoverMoved | ObstacleHit:
         match self.direction:
             case Direction.NORTH:
                 self.direction = Direction.EAST
@@ -49,10 +41,7 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.MOVED
         return MarsRoverMoved.create(id=self.id)
 
-    def turn_left(self) -> MarsRoverMoved | None:
-        if self._is_stopped():
-            return None
-
+    def turn_left(self) -> MarsRoverMoved | ObstacleHit:
         match self.direction:
             case Direction.NORTH:
                 self.direction = Direction.WEST
@@ -66,10 +55,7 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.MOVED
         return MarsRoverMoved.create(id=self.id)
 
-    def move(self) -> MarsRoverMoved | ObstacleFound | None:
-        if self._is_stopped():
-            return None
-
+    def move(self) -> MarsRoverMoved | ObstacleHit:
         match self.direction:
             case Direction.NORTH:
                 next_y = (self.actual_point.y + 1) % self.world.dimension[1]
@@ -88,8 +74,8 @@ class MarsRover(Aggregate):
                 next_point = Point.create(next_x, self.actual_point.y)
 
         if self.world.hit_obstacles(next_point):
-            self.status = MarsRoverStatus.OBSTACLE_FOUND
-            return ObstacleFound.create(id=self.id, coordinate=(next_point.x, next_point.y))
+            self.status = MarsRoverStatus.OBSTACLE_HIT
+            return ObstacleHit.create(id=self.id, coordinate=(next_point.x, next_point.y))
         else:
             self.actual_point = next_point
             self.status = MarsRoverStatus.MOVED
@@ -101,8 +87,7 @@ class MarsRover(Aggregate):
         return f"{hit_obstacles}{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"
 
     def _is_stopped(self):
-        return (self.status == MarsRoverStatus.TURNED_OFF or
-                self.status == MarsRoverStatus.OBSTACLE_FOUND)
+        return self.status == MarsRoverStatus.OBSTACLE_HIT
 
     @staticmethod
     def create(id: MarsRoverId, actual_point: Point, direction: Direction, world: World):

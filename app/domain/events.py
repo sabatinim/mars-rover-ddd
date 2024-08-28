@@ -24,13 +24,13 @@ class MarsRoverMoved(Event):
 
 
 @dataclasses.dataclass
-class ObstacleFound(Event):
+class ObstacleHit(Event):
     id: MarsRoverId
     coordinate: Tuple[int, int]
 
     @staticmethod
-    def create(id: MarsRoverId, coordinate: Tuple[int, int]) -> 'ObstacleFound':
-        return ObstacleFound(id=id, coordinate=coordinate)
+    def create(id: MarsRoverId, coordinate: Tuple[int, int]) -> 'ObstacleHit':
+        return ObstacleHit(id=id, coordinate=coordinate)
 
 
 @dataclasses.dataclass

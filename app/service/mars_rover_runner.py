@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Set
 
 from app.command_handler.commands import TurnRight, TurnLeft, Move, StartMarsRover
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher
@@ -15,7 +15,7 @@ class MarsRoverRunner:
     def __init__(self,
                  repository: InMemoryMarsRoverRepository,
                  mars_rover_path_view: List[Dict],
-                 obstacle_view: List[Dict],
+                 obstacle_view: Set[Tuple[int, int]],
                  mars_rover_start_view: List[MarsRoverId]):
         self.command_dispatcher: InMemoryCommandDispatcher = (
             create_command_dispatcher(mars_rover_repo=repository,

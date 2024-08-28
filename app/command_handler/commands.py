@@ -30,10 +30,5 @@ class Move(Command):
 
 
 @dataclasses.dataclass
-class TurnOff(Command):
-    id: MarsRoverId
-
-
-@dataclasses.dataclass
-class NotifyObstacle(Command):
+class NotifyObstacleHit(Command):
     message: str

@@ -47,5 +47,4 @@ class TestMarsRover(unittest.TestCase):
         mars_rover.move()
         mars_rover.move()
         mars_rover.move()
-        mars_rover.turn_left()
         self.assertEqual("O:1:0:N", mars_rover.coordinate())

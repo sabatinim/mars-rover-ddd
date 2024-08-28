@@ -1,13 +1,12 @@
 import unittest
 
-from app.command_handler.commands import TurnRight, TurnLeft, Move, StartMarsRover, TurnOff
+from app.command_handler.commands import TurnRight, TurnLeft, Move, StartMarsRover
 from app.command_handler.move_command_handlers import MoveCommandHandler
 from app.command_handler.start_mars_rover_command_handlers import StartMarsRoverCommandHandler
 from app.command_handler.turn_left_command_handlers import TurnLeftCommandHandler
-from app.command_handler.turn_off_command_handlers import TurnOffCommandHandler
 from app.command_handler.turn_right_command_handlers import TurnRightCommandHandler
 from app.domain.direction import Direction
-from app.domain.events import MarsRoverMoved, MarsRoverStarted, MarsRoverTurnedOff
+from app.domain.events import MarsRoverMoved, MarsRoverStarted
 from app.domain.mars_rover import MarsRover
 from app.domain.obstacles import Obstacles
 from app.domain.point import Point
@@ -27,14 +26,6 @@ class TestMarsCommandHandler(unittest.TestCase):
         mars_rover: MarsRover = repo.get_by_id(event.id)
         self.assertEqual(1, mars_rover.version)
         self.assertEqual("STARTED", mars_rover.status.value)
-
-    def test_turn_off_command_handler(self):
-        repo, id = self._setup()
-
-        event = TurnOffCommandHandler(repo=repo).handle(TurnOff(id=id))
-
-        self.assertIsInstance(event, MarsRoverTurnedOff)
-        self._assert_aggregate(event, repo, status="TURNED_OFF")
 
     def test_turn_right_command_handler(self):
         repo, id = self._setup()

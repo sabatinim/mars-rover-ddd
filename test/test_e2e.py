@@ -53,7 +53,7 @@ class TestE2E(unittest.TestCase):
         repo = InMemoryMarsRoverRepository()
         mars_rover_start_view = []
         mars_rover_path_view = []
-        obstacle_view = []
+        obstacle_view = set()
 
         runner = (
             MarsRoverRunner(repository=repo,
@@ -74,17 +74,16 @@ class TestE2E(unittest.TestCase):
 
         actual: MarsRover = repo.get_by_id(MarsRoverId(id))
         self.assertEqual("O:2:1:N", actual.coordinate())
-        self.assertEqual("TURNED_OFF", actual.status.value)
+        self.assertEqual("OBSTACLE_HIT", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "2:0:E", "2:0:N", "2:1:N"]
         self._assert_paths(expected=expected_path, actual=mars_rover_path_view)
 
-        expected_obstacles = [(2, 2)]
+        expected_obstacles = {(2, 2)}
         self._assert_obstacles(expected=expected_obstacles, actual=obstacle_view)
 
     def _assert_obstacles(self, expected, actual):
-        obstacles_found = [o["obstacle"] for o in actual]
-        self.assertEqual(expected, obstacles_found)
+        self.assertEqual(expected, actual)
 
     def _assert_paths(self, expected, actual):
         actual_path = [p["actual_point"] for p in actual]
