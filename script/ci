@@ -10,7 +10,7 @@ function log() {
 }
 
 function compose() {
-  docker  compose "$@"
+  docker compose "$@"
 }
 
 log "Building containers"
