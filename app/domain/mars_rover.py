@@ -12,7 +12,7 @@ from app.domain.world import World
 class MarsRoverStatus(enum.Enum):
     INITIALIZED = "INITIALIZED"
     STARTED = "STARTED"
-    MOVING = "MOVING"
+    MOVED = "MOVED"
     OBSTACLE_FOUND = "OBSTACLE_FOUND"
     TURNED_OFF = "TURNED_OFF"
 
@@ -46,7 +46,7 @@ class MarsRover(Aggregate):
             case Direction.EAST:
                 self.direction = Direction.SOUTH
 
-        self.status = MarsRoverStatus.MOVING
+        self.status = MarsRoverStatus.MOVED
         return MarsRoverMoved.create(id=self.id)
 
     def turn_left(self) -> MarsRoverMoved | None:
@@ -63,7 +63,7 @@ class MarsRover(Aggregate):
             case Direction.EAST:
                 self.direction = Direction.NORTH
 
-        self.status = MarsRoverStatus.MOVING
+        self.status = MarsRoverStatus.MOVED
         return MarsRoverMoved.create(id=self.id)
 
     def move(self) -> MarsRoverMoved | ObstacleFound | None:
@@ -92,7 +92,7 @@ class MarsRover(Aggregate):
             return ObstacleFound.create(id=self.id, coordinate=(next_point.x, next_point.y))
         else:
             self.actual_point = next_point
-            self.status = MarsRoverStatus.MOVING
+            self.status = MarsRoverStatus.MOVED
             return MarsRoverMoved.create(id=self.id)
 
     def coordinate(self):

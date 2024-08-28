@@ -37,7 +37,7 @@ class TestE2E(unittest.TestCase):
 
         actual: MarsRover = repo.get_by_id(MarsRoverId(id))
         self.assertEqual("1:2:N", actual.coordinate())
-        self.assertEqual("MOVING", actual.status.value)
+        self.assertEqual("MOVED", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "1:0:N", "1:1:N", "1:2:N"]
         self._assert_paths(expected=expected_path, actual=mars_rover_path_view)

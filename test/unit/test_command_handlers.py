@@ -66,7 +66,7 @@ class TestMarsCommandHandler(unittest.TestCase):
         repo.save(mars_rover)
         return repo, mars_rover.id
 
-    def _assert_aggregate(self, event, repo, status="MOVING"):
+    def _assert_aggregate(self, event, repo, status="MOVED"):
         mars_rover: MarsRover = repo.get_by_id(event.id)
         self.assertEqual(2, mars_rover.version)
         self.assertEqual(status, mars_rover.status.value)
