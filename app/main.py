@@ -23,14 +23,14 @@ def group_by(storage):
 
 
 if __name__ == "__main__":
-    number_of_rovers = 1
-    commands_length = 6
+    number_of_rovers = 12
+    commands_length = 600
     world_dimension = (10, 10)
     world_obstacles = [(1, 2), (1, 1), (4, 6), (5, 9), (5, 5)]
 
     repository = InMemoryMarsRoverRepository()
     paths_table = []
-    obstacles_table = []
+    obstacles_table = set()
     mars_rover_ids_table = []
 
     runner = (
@@ -54,12 +54,12 @@ if __name__ == "__main__":
         runner.execute(id, commands[id])
 
     grouped_paths = group_by(paths_table)
-    grouped_obstacles = group_by(obstacles_table)
 
     for id in mars_rover_ids_table:
-        print(f"##### {id} #####")
+        print(f"################################################################################")
+        print(f"RoverId: {id}")
         mars_rover = repository.get_by_id(MarsRoverId(id))
         print(f"Commands: {commands.get(id)}")
         print(f"Actual Coordinate: {mars_rover.coordinate()}")
         print(f"Paths: {grouped_paths.get(id)}, length: {len(grouped_paths.get(id))}")
-        print(f"Obstacles: {grouped_obstacles.get(id, [])}")
+        print(f"Obstacles: {obstacles_table}")
