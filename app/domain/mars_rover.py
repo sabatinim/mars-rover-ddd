@@ -3,7 +3,7 @@ import enum
 
 from app.ddd.basics import Aggregate
 from app.domain.direction import Direction
-from app.domain.events import MarsRoverMoved, ObstacleHit, MarsRoverStarted
+from app.domain.events import MarsRoverMoved, ObstacleHit, MarsRoverStarted, MarsRoverTurnedOff
 from app.domain.mars_rover_id import MarsRoverId
 from app.domain.point import Point
 from app.domain.world import World
@@ -14,6 +14,7 @@ class MarsRoverStatus(enum.Enum):
     STARTED = "STARTED"
     MOVED = "MOVED"
     OBSTACLE_HIT = "OBSTACLE_HIT"
+    TURNED_OFF = "TURNED_OFF"
 
 
 @dataclasses.dataclass
@@ -27,7 +28,10 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.STARTED
         return MarsRoverStarted.create(self.id)
 
-    def turn_right(self) -> MarsRoverMoved:
+    def turn_right(self) -> MarsRoverMoved | MarsRoverTurnedOff:
+        if self._is_turned_off():
+            return MarsRoverTurnedOff.create(self.id)
+
         match self.direction:
             case Direction.NORTH:
                 self.direction = Direction.EAST
@@ -41,7 +45,10 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.MOVED
         return MarsRoverMoved.create(id=self.id)
 
-    def turn_left(self) -> MarsRoverMoved:
+    def turn_left(self) -> MarsRoverMoved | MarsRoverTurnedOff:
+        if self._is_turned_off():
+            return MarsRoverTurnedOff.create(self.id)
+
         match self.direction:
             case Direction.NORTH:
                 self.direction = Direction.WEST
@@ -55,23 +62,32 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.MOVED
         return MarsRoverMoved.create(id=self.id)
 
-    def move(self) -> MarsRoverMoved | ObstacleHit:
+    def move(self) -> MarsRoverMoved | ObstacleHit | MarsRoverTurnedOff:
+        if self._is_turned_off():
+            return MarsRoverTurnedOff.create(self.id)
+
+        rover_x = self.actual_point.x
+        rover_y = self.actual_point.y
+
+        world_x = self.world.x()
+        world_y = self.world.y()
+
         match self.direction:
             case Direction.NORTH:
-                next_y = (self.actual_point.y + 1) % self.world.dimension[1]
-                next_point = Point.create(self.actual_point.x, next_y)
+                next_y = (rover_y + 1) % world_y
+                next_point = Point.create(rover_x, next_y)
 
             case Direction.SOUTH:
-                next_y = (self.actual_point.y - 1) % self.world.dimension[1]
-                next_point = Point.create(self.actual_point.x, next_y)
+                next_y = (rover_y - 1) % world_y
+                next_point = Point.create(rover_x, next_y)
 
             case Direction.WEST:
-                next_x = (self.actual_point.x - 1) % self.world.dimension[0]
-                next_point = Point.create(next_x, self.actual_point.y)
+                next_x = (rover_x - 1) % world_x
+                next_point = Point.create(next_x, rover_y)
 
             case Direction.EAST:
-                next_x = (self.actual_point.x + 1) % self.world.dimension[0]
-                next_point = Point.create(next_x, self.actual_point.y)
+                next_x = (rover_x + 1) % world_x
+                next_point = Point.create(next_x, rover_y)
 
         if self.world.hit_obstacles(next_point):
             self.status = MarsRoverStatus.OBSTACLE_HIT
@@ -81,10 +97,17 @@ class MarsRover(Aggregate):
             self.status = MarsRoverStatus.MOVED
             return MarsRoverMoved.create(id=self.id)
 
+    def turn_off(self) -> MarsRoverTurnedOff:
+        self.status = MarsRoverStatus.TURNED_OFF
+        return MarsRoverTurnedOff.create(id=self.id)
+
     def coordinate(self):
-        hit_obstacles = "O:" if self._is_obstacle_hit() else ""
+        hit_obstacles = "O:" if self._is_obstacle_hit() or self._is_turned_off() else ""
 
         return f"{hit_obstacles}{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"
+
+    def _is_turned_off(self):
+        return MarsRoverStatus.TURNED_OFF == self.status
 
     def _is_obstacle_hit(self):
         return self.status == MarsRoverStatus.OBSTACLE_HIT

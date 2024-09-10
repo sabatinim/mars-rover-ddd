@@ -1,6 +1,7 @@
 from typing import List, Dict, Tuple, Set
 
 from app.command_handler.commands import TurnRight, TurnLeft, Move, StartMarsRover
+from app.ddd.basics import Command
 from app.ddd.command_dispatcher import InMemoryCommandDispatcher
 from app.domain.direction import Direction
 from app.domain.mars_rover_id import MarsRoverId
@@ -39,14 +40,15 @@ class MarsRoverRunner:
         return self
 
     def start_rover(self):
-        start = StartMarsRover(initial_point=self.initial_point,
-                               initial_direction=self.initial_direction,
-                               world=self.world)
-        self.command_dispatcher.submit([start])
+        command = StartMarsRover(initial_point=self.initial_point,
+                                 initial_direction=self.initial_direction,
+                                 world=self.world)
+
+        self.command_dispatcher.submit(command)
         self.command_dispatcher.run()
 
     def execute(self, rover_id: str, commands: str):
-        parsed_commands = [self.command_map[c](MarsRoverId(rover_id)) for c in commands]
-
-        self.command_dispatcher.submit(commands=parsed_commands)
-        self.command_dispatcher.run()
+        commands: List[Command] = [self.command_map[c](MarsRoverId(rover_id)) for c in commands]
+        for c in commands:
+            self.command_dispatcher.submit(command=c)
+            self.command_dispatcher.run()

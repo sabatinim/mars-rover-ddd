@@ -10,6 +10,12 @@ class World:
     dimension: Tuple[int, int]
     obstacles: Obstacles
 
+    def x(self):
+        return self.dimension[0]
+
+    def y(self):
+        return self.dimension[1]
+
     def hit_obstacles(self, point: Point):
         for p in self.obstacles.points:
             if p == point:

@@ -14,9 +14,8 @@ class InMemoryCommandDispatcher:
 
         self.commands: List[Command] = []
 
-    def submit(self, commands: List[Command]):
-        for c in commands:
-            self.commands.append(c)
+    def submit(self, command: Command):
+        self.commands.append(command)
 
     def run(self):
         while self.commands:

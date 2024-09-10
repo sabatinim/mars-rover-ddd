@@ -51,15 +51,15 @@ if __name__ == "__main__":
         random_commands = generate_random_commands(commands_length)
         commands[id] = random_commands
 
-        runner.execute(id, commands[id])
+        runner.execute(id.value, commands[id])
 
     grouped_paths = group_by(paths_table)
 
     for id in mars_rover_ids_table:
         print(f"################################################################################")
         print(f"RoverId: {id}")
-        mars_rover = repository.get_by_id(MarsRoverId(id))
+        mars_rover = repository.get_by_id(id)
         print(f"Commands: {commands.get(id)}")
         print(f"Actual Coordinate: {mars_rover.coordinate()}")
-        print(f"Paths: {grouped_paths.get(id)}, length: {len(grouped_paths.get(id))}")
+        print(f"Paths: {grouped_paths.get(id.value)}, length: {len(grouped_paths.get(id.value))}")
         print(f"Obstacles: {obstacles_table}")

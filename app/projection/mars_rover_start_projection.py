@@ -22,4 +22,4 @@ class MarsRoverStartProjection(Projection):
         raw = {"id": mars_rover.id.value, "actual_point": mars_rover.coordinate()}
 
         self.paths_storage.append(raw)
-        self.mars_rover_storage.append(mars_rover.id.value)
+        self.mars_rover_storage.append(mars_rover.id)

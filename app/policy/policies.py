@@ -1,6 +1,11 @@
-from app.command_handler.commands import NotifyObstacleHit
+from app.command_handler.commands import NotifyObstacleHit, TurnOff
 from app.ddd.basics import Policy, Command
 from app.domain.events import ObstacleHit
+
+
+class TurnOffObstacleHitPolicy(Policy):
+    def apply(self, event: ObstacleHit) -> Command:
+        return TurnOff(id=event.id)
 
 
 class NotifyObstacleHitPolicy(Policy):
