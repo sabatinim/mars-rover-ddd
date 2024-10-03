@@ -23,9 +23,8 @@ class InMemoryCommandDispatcher:
             print(f"[COMMAND] {command}")
 
             event: Event = self.command_handlers[type(command)].handle(command)
+            print(f"[EVENT] {event}")
 
-            if event:
-                print(f"[EVENT] {event}")
             event_policies = self.policies.get(type(event), [])
             for policy in event_policies:
                 new_command = policy.apply(event)

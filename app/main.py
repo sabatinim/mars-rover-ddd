@@ -2,7 +2,6 @@ import random
 from collections import defaultdict
 
 from app.domain.direction import Direction
-from app.domain.mars_rover_id import MarsRoverId
 from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 from app.service.mars_rover_runner import MarsRoverRunner
 
@@ -23,8 +22,8 @@ def group_by(storage):
 
 
 if __name__ == "__main__":
-    number_of_rovers = 12
-    commands_length = 600
+    number_of_rovers = 1
+    commands_length = 6
     world_dimension = (10, 10)
     world_obstacles = [(1, 2), (1, 1), (4, 6), (5, 9), (5, 5)]
 
