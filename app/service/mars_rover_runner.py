@@ -44,11 +44,13 @@ class MarsRoverRunner:
                                  initial_direction=self.initial_direction,
                                  world=self.world)
 
-        self.command_dispatcher.submit(command)
-        self.command_dispatcher.run()
+        (self.command_dispatcher
+         .submit(command)
+         .run())
 
     def execute(self, rover_id: str, commands: str):
         commands: List[Command] = [self.command_map[c](MarsRoverId(rover_id)) for c in commands]
         for c in commands:
-            self.command_dispatcher.submit(command=c)
-            self.command_dispatcher.run()
+            (self.command_dispatcher
+             .submit(command=c)
+             .run())

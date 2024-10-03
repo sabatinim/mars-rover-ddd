@@ -16,6 +16,7 @@ class InMemoryCommandDispatcher:
 
     def submit(self, command: Command):
         self.commands.append(command)
+        return self
 
     def run(self):
         while self.commands:
