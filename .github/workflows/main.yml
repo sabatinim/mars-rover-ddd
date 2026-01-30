@@ -8,4 +8,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: CI
-        run: script/ci
+        run: devops/run.sh ci

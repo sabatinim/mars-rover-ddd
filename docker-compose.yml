@@ -4,7 +4,8 @@ services:
       context: .
       dockerfile: container/Dockerfile
     volumes:
-      - ${PWD}:/code
+      - ${PWD}:/code:cached
+    command: sleep infinity
     container_name: mars-rover
     networks:
       - mars-rover-net
