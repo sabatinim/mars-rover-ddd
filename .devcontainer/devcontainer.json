@@ -6,7 +6,10 @@
 	"service": "mars-rover",
 	"workspaceFolder": "/code/${localWorkspaceFolderBasename}",
 	"features": {
-		"ghcr.io/devcontainers/features/git:1": {}
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/sshd:1": {
+			"version": "latest"
+		}
 	},
 	"customizations": {
 		"vscode": {

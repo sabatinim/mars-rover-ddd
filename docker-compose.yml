@@ -5,6 +5,7 @@ services:
       dockerfile: container/Dockerfile
     volumes:
       - ${PWD}:/code:cached
+      - ${PWD}/.ssh:/root/.ssh
     command: sleep infinity
     container_name: mars-rover
     networks:
