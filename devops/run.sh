@@ -24,14 +24,25 @@ function check_code() {
 }
 
 function run_tests() {
-  log "Running tests"
-  pytest -s -vv --durations=50
+  local test_path="$1"
+  if [ -n "$test_path" ]; then
+    log "Running tests for $test_path"
+    pytest -s -vv --durations=50 "$test_path"
+  else
+    log "Running tests"
+    pytest -s -vv --durations=50
+  fi
 }
 
 function run_ci() {
+  local test_path="$1"
   log "Running CI pipeline with docker compose"
   compose up  mars-rover -d 
-  compose exec -it mars-rover devops/run.sh test
+  if [ -n "$test_path" ]; then
+    compose exec -it mars-rover devops/run.sh test "$test_path"
+  else
+    compose exec -it mars-rover devops/run.sh test
+  fi
 }
 
 function shutdown_containers() {
@@ -96,10 +107,10 @@ case "$COMMAND" in
     check_code
     ;;
   test)
-    run_tests
+    run_tests "$2"
     ;;
   ci)
-    run_ci
+    run_ci "$2"
     ;;
   shutdown)
     shutdown_containers

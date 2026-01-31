@@ -22,12 +22,12 @@ def create_command_dispatcher(mars_rover_repo: InMemoryMarsRoverRepository,
                               mars_rover_start_view: List[MarsRoverId],
                               mars_rover_path_view: List[Dict],
                               obstacle_view: Set[Tuple[int, int]]) -> InMemoryCommandDispatcher:
-    start = StartMarsRoverCommandHandler(repo=mars_rover_repo)
-    turn_right = TurnRightCommandHandler(repo=mars_rover_repo)
-    turn_left = TurnLeftCommandHandler(repo=mars_rover_repo)
-    move = MoveCommandHandler(repo=mars_rover_repo)
-    turn_off = TurnOffCommandHandler(repo=mars_rover_repo)
-    notify_obstacle = NotifyObstacleCommandHandler()
+    start_command_handler = StartMarsRoverCommandHandler(repo=mars_rover_repo)
+    turn_right_command_handler = TurnRightCommandHandler(repo=mars_rover_repo)
+    turn_left_command_handler = TurnLeftCommandHandler(repo=mars_rover_repo)
+    move_command_handler = MoveCommandHandler(repo=mars_rover_repo)
+    turn_off_command_handler = TurnOffCommandHandler(repo=mars_rover_repo)
+    notify_obstacle_command_handler = NotifyObstacleCommandHandler()
 
     turn_off_policy = TurnOffObstacleHitPolicy()
     notify_obstacle_policy = NotifyObstacleHitPolicy()
@@ -40,12 +40,12 @@ def create_command_dispatcher(mars_rover_repo: InMemoryMarsRoverRepository,
     obstacles_projection = MarsRoverObstaclesProjection(obstacle_view=obstacle_view)
 
     return (InMemoryCommandDispatcherBuilder()
-            .with_command_handler(StartMarsRover, start)
-            .with_command_handler(TurnRight, turn_right)
-            .with_command_handler(TurnLeft, turn_left)
-            .with_command_handler(Move, move)
-            .with_command_handler(TurnOff, turn_off)
-            .with_command_handler(NotifyObstacleHit, notify_obstacle)
+            .with_command_handler(StartMarsRover, start_command_handler)
+            .with_command_handler(TurnRight, turn_right_command_handler)
+            .with_command_handler(TurnLeft, turn_left_command_handler)
+            .with_command_handler(Move, move_command_handler)
+            .with_command_handler(TurnOff, turn_off_command_handler)
+            .with_command_handler(NotifyObstacleHit, notify_obstacle_command_handler)
             .with_policy(ObstacleHit, turn_off_policy)
             .with_policy(ObstacleHit, notify_obstacle_policy)
             .with_projection(MarsRoverStarted, start_projection)

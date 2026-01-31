@@ -8,10 +8,14 @@
 	
 	"customizations": {
 		"vscode": {
-			"settings": {},
+			"settings": {
+				"python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+				"python.analysis.typeCheckingMode": "basic"
+			},
 			"extensions": [
-				"streetsidesoftware.code-spell-checker"
-			]
+				"streetsidesoftware.code-spell-checker",
+				"ms-python.python",
+				"ms-python.vscode-pylance"
 		}
 	}
 }
