@@ -19,7 +19,7 @@ class MarsRoverStatus(enum.Enum):
 
 @dataclasses.dataclass
 class MarsRover(Aggregate):
-    actual_point: Point
+    actual_position: Point
     direction: Direction
     world: World
     status: MarsRoverStatus
@@ -66,8 +66,8 @@ class MarsRover(Aggregate):
         if self._is_turned_off():
             return MarsRoverTurnedOff.create(self.id)
 
-        rover_x = self.actual_point.x
-        rover_y = self.actual_point.y
+        rover_x = self.actual_position.x
+        rover_y = self.actual_position.y
 
         world_x = self.world.x()
         world_y = self.world.y()
@@ -93,7 +93,7 @@ class MarsRover(Aggregate):
             self.status = MarsRoverStatus.OBSTACLE_HIT
             return ObstacleHit.create(id=self.id, coordinate=(next_point.x, next_point.y))
         else:
-            self.actual_point = next_point
+            self.actual_position = next_point
             self.status = MarsRoverStatus.MOVED
             return MarsRoverMoved.create(id=self.id)
 
@@ -104,7 +104,7 @@ class MarsRover(Aggregate):
     def actual_coordinate(self):
         hit_obstacles = "O:" if self._is_obstacle_hit() or self._is_turned_off() else ""
 
-        return f"{hit_obstacles}{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"
+        return f"{hit_obstacles}{self.actual_position.x}:{self.actual_position.y}:{self.direction.value}"
 
     def _is_turned_off(self):
         return MarsRoverStatus.TURNED_OFF == self.status
@@ -116,7 +116,7 @@ class MarsRover(Aggregate):
     def create(id: MarsRoverId, actual_point: Point, direction: Direction, world: World):
         return MarsRover(id=id,
                          version=0,
-                         actual_point=actual_point,
+                         actual_position=actual_point,
                          world=world,
                          direction=direction,
                          status=MarsRoverStatus.CREATED)
