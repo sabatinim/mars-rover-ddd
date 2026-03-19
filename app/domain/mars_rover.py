@@ -101,7 +101,7 @@ class MarsRover(Aggregate):
         self.status = MarsRoverStatus.TURNED_OFF
         return MarsRoverTurnedOff.create(id=self.id)
 
-    def coordinate(self):
+    def actual_coordinate(self):
         hit_obstacles = "O:" if self._is_obstacle_hit() or self._is_turned_off() else ""
 
         return f"{hit_obstacles}{self.actual_point.x}:{self.actual_point.y}:{self.direction.value}"

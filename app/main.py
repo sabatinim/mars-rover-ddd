@@ -61,6 +61,6 @@ if __name__ == "__main__":
         print(f"RoverId: {id.value}")
         mars_rover: MarsRover | None = repository.get_by_id(id)
         
-        print(f"    Actual Coordinate: {mars_rover.coordinate()}")
+        print(f"    Actual Coordinate: {mars_rover.actual_coordinate()}")
         print(f"    Paths: {grouped_paths.get(id.value)}, length: {len(grouped_paths.get(id.value))}")
         print(f"    Obstacles: {obstacles_table}")

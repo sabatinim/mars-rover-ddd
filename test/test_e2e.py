@@ -36,7 +36,7 @@ class TestE2E(unittest.TestCase):
         runner.execute(rover_id=id.value, command_str="RMLMM")
 
         actual: MarsRover = repo.get_by_id(id)
-        self.assertEqual("1:2:N", actual.coordinate())
+        self.assertEqual("1:2:N", actual.actual_coordinate())
         self.assertEqual("MOVED", actual.status.value)
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "1:0:N", "1:1:N", "1:2:N"]
@@ -74,7 +74,7 @@ class TestE2E(unittest.TestCase):
 
         actual: MarsRover = repo.get_by_id(id)
         self.assertEqual("TURNED_OFF", actual.status.value)
-        self.assertEqual("O:2:1:N", actual.coordinate())
+        self.assertEqual("O:2:1:N", actual.actual_coordinate())
 
         expected_path = ["0:0:N", "0:0:E", "1:0:E", "2:0:E", "2:0:N", "2:1:N"]
         self._assert_paths(expected=expected_path, actual=mars_rover_path_view)
