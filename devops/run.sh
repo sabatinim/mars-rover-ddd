@@ -45,6 +45,11 @@ function run_ci() {
   fi
 }
 
+function run_application() {
+  log "Running the application"
+  python -m app.main
+}
+
 function shutdown_containers() {
   log "Shutdown containers"
   docker network prune --force && compose down --remove-orphans --volumes
@@ -74,6 +79,10 @@ AVAILABLE COMMANDS:
   ci         - Run tests inside docker container using compose
              - Executes: docker compose run mars-rover pytest -s -vv --durations=50
              - Tests run in isolated Docker environment with dependencies
+
+  run        - Run the mars rover application
+             - Executes: python -m app.main
+             - Starts the application
 
   shutdown   - Clean up Docker resources
              - Prunes unused networks and removes containers/volumes
@@ -111,6 +120,9 @@ case "$COMMAND" in
     ;;
   ci)
     run_ci "$2"
+    ;;
+  run)
+    run_application
     ;;
   shutdown)
     shutdown_containers

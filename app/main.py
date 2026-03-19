@@ -2,6 +2,7 @@ import random
 from collections import defaultdict
 
 from app.domain.direction import Direction
+from app.domain.mars_rover import MarsRover
 from app.infrastructure.mars_rover_repository import InMemoryMarsRoverRepository
 from app.service.mars_rover_runner import MarsRoverRunner
 
@@ -23,7 +24,7 @@ def group_by(storage):
 
 if __name__ == "__main__":
     number_of_rovers = 1
-    commands_length = 6
+    commands_length = 150
     world_dimension = (10, 10)
     world_obstacles = [(1, 2), (1, 1), (4, 6), (5, 9), (5, 5)]
 
@@ -50,15 +51,16 @@ if __name__ == "__main__":
         random_commands = generate_random_commands(commands_length)
         commands[id] = random_commands
 
+        print(f"Commands from CLI: {commands.get(id)}")
         runner.execute(id.value, commands[id])
 
     grouped_paths = group_by(paths_table)
 
     for id in mars_rover_ids_table:
         print(f"################################################################################")
-        print(f"RoverId: {id}")
-        mars_rover = repository.get_by_id(id)
-        print(f"Commands: {commands.get(id)}")
-        print(f"Actual Coordinate: {mars_rover.coordinate()}")
-        print(f"Paths: {grouped_paths.get(id.value)}, length: {len(grouped_paths.get(id.value))}")
-        print(f"Obstacles: {obstacles_table}")
+        print(f"RoverId: {id.value}")
+        mars_rover: MarsRover | None = repository.get_by_id(id)
+        
+        print(f"    Actual Coordinate: {mars_rover.coordinate()}")
+        print(f"    Paths: {grouped_paths.get(id.value)}, length: {len(grouped_paths.get(id.value))}")
+        print(f"    Obstacles: {obstacles_table}")
