@@ -33,7 +33,7 @@ class TestE2E(unittest.TestCase):
 
         id = mars_rover_start_view[0]
 
-        runner.execute(rover_id=id.value, commands="RMLMM")
+        runner.execute(rover_id=id.value, command_str="RMLMM")
 
         actual: MarsRover = repo.get_by_id(id)
         self.assertEqual("1:2:N", actual.coordinate())
@@ -70,7 +70,7 @@ class TestE2E(unittest.TestCase):
 
         id = mars_rover_start_view[0]
 
-        runner.execute(rover_id=id.value, commands="RMMLMMMMMMMMMMMRMMMM")
+        runner.execute(rover_id=id.value, command_str="RMMLMMMMMMMMMMMRMMMM")
 
         actual: MarsRover = repo.get_by_id(id)
         self.assertEqual("TURNED_OFF", actual.status.value)

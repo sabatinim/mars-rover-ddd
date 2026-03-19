@@ -14,7 +14,7 @@ class InMemoryGenericAggregateRepository(Generic[AGGREGATE]):
     def __init__(self):
         self._resources = {}
 
-    def save(self, aggregate):
+    def save(self, aggregate: AGGREGATE):
         if self._resources.get(aggregate.id.value) and \
                 self._resources[aggregate.id.value].version != aggregate.version:
             raise ConcurrencyException("Optimistic concurrency control check failed")
