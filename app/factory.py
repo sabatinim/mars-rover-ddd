@@ -11,6 +11,7 @@ def create_mars_rover(actual_point: Point = None,
                       world=None,
                       rover_id: MarsRoverId = None,
                       obstacles: Obstacles = None) -> MarsRover:
+    
     if rover_id is None:
         rover_id = MarsRoverId.new()
 
